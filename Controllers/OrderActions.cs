@@ -132,6 +132,7 @@ namespace Shop.Main.Actions
         }
 
         [HttpPost("ChangeOrderStatus")]
+        [Authorize]
         public async Task<IActionResult> ChangeOrderStatus([FromBody] ChangeOrderStatusModel model)
         {
             try
@@ -175,6 +176,7 @@ namespace Shop.Main.Actions
         }
 
         [HttpGet("GetNewOrders")]
+        [Authorize]
         public async Task<IActionResult> GetNewOrders()
         {
             try
@@ -187,7 +189,8 @@ namespace Shop.Main.Actions
                     {
                         _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' get new orders");
 
-                        return Ok(await _orderActionsBL.GetNewOrders());
+                        var dd = await _orderActionsBL.GetNewOrders();
+                        return Ok(dd);
                     }
                     else
                     {
@@ -205,31 +208,19 @@ namespace Shop.Main.Actions
             }
         }
 
-        [HttpPost("MakeTestPayment")]
-        public async Task<IActionResult> MakeTestPayment()
-        {
-            try
-            {
-                //var response = await _orderActionsBL.GoToPayment("",);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
-
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
         [HttpPost("PaymentStatus")]
         public IActionResult PaymentStatus([FromForm] string data, [FromForm] string signature)
         {
             try
             {
-                _orderActionsBL.ConfirmPayment(data,signature);
-
-                return Ok();
+                if(_orderActionsBL.ConfirmPayment(data, signature))
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {

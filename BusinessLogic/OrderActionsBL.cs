@@ -260,18 +260,23 @@ namespace WebShop.Main.BusinessLogic
                 return false;
             }
 
-            var orderr = new Order();
             dynamic result = JsonConvert.DeserializeObject(decodedData);
 
-            string res = result.order_id;
+            string orderId = result.order_id;
 
-            var order = _context.orders.FirstOrDefault(x => x.OrderId.ToString() == res);
+            string status = result.status;
 
-            SentNotofication(orderr, $"One: {signature} Two: {expectedSignature} Three: {decodedData} Four: {res}");
+            if(status != "success")
+            {
+                return false;
+            }
+
+            var order = _context.orders.FirstOrDefault(x => x.OrderId.ToString() == orderId);
 
             order.OrderStatus = OrderStatus.AwaitingConfirm;
 
             _context.SaveChanges();
+
             return true;
 
         }
