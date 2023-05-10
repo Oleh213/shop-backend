@@ -25,6 +25,8 @@ namespace WebShop.Main.Interfaces
         Task<string> ChangeOrderStatus(Order order, OrderStatus orderStatus);
 
         Task<string> GoToPayment(string email, double amount, Guid orderId);
+
+        bool ConfirmPayment(string data, string signature);
     }
 }
 

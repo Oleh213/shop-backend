@@ -227,14 +227,7 @@ namespace Shop.Main.Actions
         {
             try
             {
-                string decodedData = Encoding.UTF8.GetString(Convert.FromBase64String(data));
-
-                string expectedSignature = Convert.ToBase64String(ComputeHash("sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz" + data + "sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz"));
-                if (signature != expectedSignature)
-                {
-                    // Якщо підпис не збігається, повернути помилку
-                    return BadRequest("Invalid signature.");
-                }
+                _orderActionsBL.ConfirmPayment(data,signature);
 
                 return Ok();
             }
@@ -245,21 +238,9 @@ namespace Shop.Main.Actions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        private byte[] ComputeHash(string input)
-        {
-            using (var sha1 = new System.Security.Cryptography.SHA1Managed())
-            {
-                return sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-            }
-        }
+       
 
     }
-    public class LiqPayCheckoutFormModel
-    {
-        public string Data { get; set; }
-    }
-
-  
 }
 
 

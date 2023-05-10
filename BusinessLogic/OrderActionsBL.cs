@@ -7,8 +7,10 @@ using System.Text;
 using LiqPay.SDK;
 using LiqPay.SDK.Dto;
 using LiqPay.SDK.Dto.Enums;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Shop.Main.Actions;
 using sushi_backend.BusinessLogic;
 using sushi_backend.Context;
@@ -239,13 +241,40 @@ namespace WebShop.Main.BusinessLogic
 
             var liqPayClient = new LiqPayClient("sandbox_i35438868943", "sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz");
 
-            var generated = liqPayClient.PrepareRequestData(invoiceRequest);
-
             var response = await liqPayClient.RequestAsync("request", invoiceRequest);
 
             return response.Href;
         }
 
+        public bool ConfirmPayment(string data, string signature)
+        {
+            string decodedData = Encoding.UTF8.GetString(Convert.FromBase64String(data));
+
+            string expectedSignature = Convert.ToBase64String(ComputeHash("sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz" + data + "sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz"));
+            if (signature != expectedSignature)
+            {
+                return false;
+            }
+
+            dynamic result = JsonConvert.DeserializeObject(decodedData);
+
+            string res = result.order_id;
+
+            var order = _context.orders.FirstOrDefault(x => x.OrderId.ToString() == res);
+
+            order.Name = "Yraaaaaaaaaa";
+            order.OrderStatus = OrderStatus.AwaitingConfirm;
+            return true;
+
+        }
+
+        private byte[] ComputeHash(string input)
+        {
+            using (var sha1 = new System.Security.Cryptography.SHA1Managed())
+            {
+                return sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+            }
+        }
     }
 }
 
