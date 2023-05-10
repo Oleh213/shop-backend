@@ -223,11 +223,11 @@ namespace Shop.Main.Actions
         }
 
         [HttpPost("PaymentStatus")]
-        public IActionResult PaymentStatus(LiqPayCheckoutFormModel data)
+        public IActionResult PaymentStatus(string data)
         {
             try
             {
-                return Ok(LiqPayUtil.DecodeBase64(data.Data));
+                return Ok();
             }
             catch (Exception ex)
             {
