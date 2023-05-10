@@ -250,7 +250,11 @@ namespace Shop.Main.Actions
 
     public class Payment
     {
-        public InputFormatterContext Data { get; set; }
+        public string Data { get; set; }
+
+        public string Signature { get; set; }
+
+        
     }
 }
 
