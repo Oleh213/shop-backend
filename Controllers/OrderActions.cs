@@ -223,20 +223,11 @@ namespace Shop.Main.Actions
         }
 
         [HttpPost("PaymentStatus")]
-        public async Task<IActionResult> PaymentStatus([FromBody] Payment data)
+        public IActionResult PaymentStatus(LiqPayCheckoutFormModel data)
         {
             try
             {
-                var liqPayClient = new LiqPayClient("sandbox_i35438868943", "sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz");
-
-                var request = new LiqPayRequest
-                {
-                    OrderId = Guid.Parse("32fd6f18-ba48-4d6c-aeda-2ac9316d4bbf").ToString(),
-                    Action = LiqPayRequestAction.Auth,
-                };
-                var response = await liqPayClient.RequestAsync("request", request);
-
-                return Ok(response);
+                return Ok(LiqPayUtil.DecodeBase64(data.Data));
             }
             catch (Exception ex)
             {
@@ -247,15 +238,13 @@ namespace Shop.Main.Actions
         }
 
     }
-
-    public class Payment
+    public class LiqPayCheckoutFormModel
     {
         public string Data { get; set; }
 
         public string Signature { get; set; }
-
-        
     }
+
 }
 
 
