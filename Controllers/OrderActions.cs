@@ -223,7 +223,7 @@ namespace Shop.Main.Actions
         }
 
         [HttpPost("PaymentStatus")]
-        public IActionResult PaymentStatus([FromBody] LiqPayCheckoutFormModel data)
+        public IActionResult PaymentStatus([FromForm] LiqPayCheckoutFormModel data)
         {
             try
             {
@@ -240,7 +240,7 @@ namespace Shop.Main.Actions
     }
     public class LiqPayCheckoutFormModel
     {
-        public string request_data { get; set; }
+        public string data { get; set; }
     }
 
 }
