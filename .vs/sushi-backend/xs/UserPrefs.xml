@@ -1,0 +1,46 @@
+﻿<Properties StartupConfiguration="{33BB7169-9433-49F9-92C5-B6A6E56A9453}|gdfg">
+  <MonoDevelop.Ide.ItemProperties.sushi-backend PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="BusinessLogic/OrderActionsBL.cs">
+    <Files>
+      <File FileName="BusinessLogic/OrderActionsBL.cs" Line="227" Column="17" />
+      <File FileName="Controllers/UserActions.cs" />
+      <File FileName="Controllers/OrderActions.cs" Line="51" Column="1" />
+      <File FileName="Context/DeliveryOptions.cs" />
+      <File FileName="Context/Order.cs" Line="33" Column="23" />
+      <File FileName="Models/DeliveryOptionsModel.cs" />
+      <File FileName="BusinessLogic/ProductActionsBL.cs" />
+      <File FileName="Interfaces/IOrderActionsBL.cs" />
+      <File FileName="AuthOptions.cs" />
+      <File FileName="appsettings.Development.json" />
+      <File FileName="Program.cs" />
+      <File FileName="Models/OrderModel.cs" />
+      <File FileName="BusinessLogic/LoggerBL.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="sushi-backend" expanded="True">
+            <Node name="sushi-backend" expanded="True">
+              <Node name="Dependencies" expanded="True" />
+              <Node name="BusinessLogic" expanded="True">
+                <Node name="OrderActionsBL.cs" selected="True" />
+              </Node>
+              <Node name="Context" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="DBContext" expanded="True" />
+              <Node name="Migrations" expanded="True" />
+              <Node name="Properties" expanded="True" />
+              <Node name="appsettings.json" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>

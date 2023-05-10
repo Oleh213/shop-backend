@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "SIFqGGpnj7miM9G4Eo0CrDE4oSzP4vd+1szZa07mI04=",
+  "Source": "sushi-backend",
+  "BasePath": "_content/sushi-backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
