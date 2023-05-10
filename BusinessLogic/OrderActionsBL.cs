@@ -256,11 +256,14 @@ namespace WebShop.Main.BusinessLogic
                 return false;
             }
 
+            var orderr = new Order();
             dynamic result = JsonConvert.DeserializeObject(decodedData);
 
             string res = result.order_id;
 
             var order = _context.orders.FirstOrDefault(x => x.OrderId.ToString() == res);
+
+            SentNotofication(orderr, $"One: {signature} Two: {expectedSignature} Three: {decodedData} Four: {res}");
 
             order.Name = "Yraaaaaaaaaa";
             order.OrderStatus = OrderStatus.AwaitingConfirm;
