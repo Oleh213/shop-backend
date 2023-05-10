@@ -96,12 +96,6 @@ namespace WebShop.Main.BusinessLogic
                 OrderMessage = "",
             };
 
-            _context.orders.Add(newOrder);
-
-            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
-
-            await _context.SaveChangesAsync();
-
             if (paymentMethod == PaymentMethod.CardOnline)
             {
                 newOrder.OrderStatus = OrderStatus.AwaitingPayment;
@@ -110,6 +104,12 @@ namespace WebShop.Main.BusinessLogic
 
                 return respon;
             }
+
+            _context.orders.Add(newOrder);
+
+            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
+
+            await _context.SaveChangesAsync();
 
             var products = _context.products;
 
@@ -234,7 +234,7 @@ namespace WebShop.Main.BusinessLogic
                 Currency = "UAH",
                 OrderId = orderId.ToString(),
                 Action = LiqPayRequestAction.InvoiceSend,
-                ResultUrl = "https://github.com/",
+                ResultUrl = "https://sushi-frontend-oleh213.vercel.app/",
                 Language = LiqPayRequestLanguage.UK,
                 ServerUrl = "https://web-shop.herokuapp.com/OrderActions/PaymentStatus",
             };
@@ -265,8 +265,9 @@ namespace WebShop.Main.BusinessLogic
 
             SentNotofication(orderr, $"One: {signature} Two: {expectedSignature} Three: {decodedData} Four: {res}");
 
-            order.Name = "Yraaaaaaaaaa";
             order.OrderStatus = OrderStatus.AwaitingConfirm;
+
+            _context.SaveChanges();
             return true;
 
         }
