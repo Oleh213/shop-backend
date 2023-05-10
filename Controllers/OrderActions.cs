@@ -190,6 +190,7 @@ namespace Shop.Main.Actions
                         _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' get new orders");
 
                         var dd = await _orderActionsBL.GetNewOrders();
+
                         return Ok(dd);
                     }
                     else

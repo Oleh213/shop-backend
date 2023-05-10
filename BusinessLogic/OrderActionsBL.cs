@@ -96,25 +96,6 @@ namespace WebShop.Main.BusinessLogic
                 OrderMessage = "",
             };
 
-            _context.orders.Add(newOrder);
-
-            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
-
-            if (paymentMethod == PaymentMethod.CardOnline)
-            {
-                newOrder.OrderStatus = OrderStatus.AwaitingPayment;
-
-                await _context.SaveChangesAsync();
-
-                var respon = await GoToPayment(contactInfo.Email, totalPrice, orderId);
-
-                return respon;
-            }
-
-            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
-
-            await _context.SaveChangesAsync();
-
             var products = _context.products;
 
             foreach (var item in cartItems)
@@ -132,6 +113,26 @@ namespace WebShop.Main.BusinessLogic
                 });
                 orderProduct += $" {product.Name} x {item.Count} \n";
             }
+
+            _context.orders.Add(newOrder);
+
+            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
+
+            if (paymentMethod == PaymentMethod.CardOnline)
+            {
+                newOrder.OrderStatus = OrderStatus.AwaitingPayment;
+
+                await _context.SaveChangesAsync();
+
+                var respon = await GoToPayment(contactInfo.Email, totalPrice, orderId);
+
+                return respon;
+            }
+
+            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
+
+
+            await _context.SaveChangesAsync();
 
             SentNotofication(newOrder,orderProduct);
 
