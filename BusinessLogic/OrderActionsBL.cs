@@ -96,16 +96,20 @@ namespace WebShop.Main.BusinessLogic
                 OrderMessage = "",
             };
 
+            _context.orders.Add(newOrder);
+
+            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
+
             if (paymentMethod == PaymentMethod.CardOnline)
             {
                 newOrder.OrderStatus = OrderStatus.AwaitingPayment;
+
+                await _context.SaveChangesAsync();
 
                 var respon = await GoToPayment(contactInfo.Email, totalPrice, orderId);
 
                 return respon;
             }
-
-            _context.orders.Add(newOrder);
 
             await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
 
