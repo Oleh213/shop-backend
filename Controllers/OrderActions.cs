@@ -24,6 +24,7 @@ using System.Text;
 using LiqPay.SDK.Dto;
 using LiqPay.SDK;
 using LiqPay.SDK.Dto.Enums;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Shop.Main.Actions
 {
@@ -222,7 +223,7 @@ namespace Shop.Main.Actions
         }
 
         [HttpPost("PaymentStatus")]
-        public async Task<IActionResult> PaymentStatus([FromBody] HttpClient httpClient)
+        public async Task<IActionResult> PaymentStatus([FromBody] Payment data)
         {
             try
             {
@@ -249,7 +250,7 @@ namespace Shop.Main.Actions
 
     public class Payment
     {
-        public JsonObjectAttribute Data { get; set; }
+        public InputFormatterContext Data { get; set; }
     }
 }
 
