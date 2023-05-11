@@ -137,9 +137,9 @@ namespace WebShop.Main.BusinessLogic
 
             await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
 
-            SentNotofication(newOrder, orderProduct);
-
             await _context.SaveChangesAsync();
+
+            SentNotofication(newOrder, orderProduct);
 
             return "Засовлення успішно створено!";
         }
@@ -290,7 +290,6 @@ namespace WebShop.Main.BusinessLogic
             foreach (var item in order.OrderLists)
             {
                 var product = products.FirstOrDefault(x => x.ProductId == item.ProductId);
-
                
                 orderProduct += $" {product.Name} x {item.Count} \n";
             }
@@ -299,9 +298,9 @@ namespace WebShop.Main.BusinessLogic
 
             order.OrderStatus = OrderStatus.AwaitingConfirm;
 
-            _hubContext.Clients.All.SendAsync("MakeOrder", order);
-
             _context.SaveChanges();
+
+            _hubContext.Clients.All.SendAsync("MakeOrder", order);
 
             return true;
 
