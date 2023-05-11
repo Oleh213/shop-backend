@@ -50,14 +50,19 @@ namespace WebShop.Main.BusinessLogic
 
             double totalPrice = GetTotalPrice(cartItems);
 
+            double discount =0;
+
             if (deliveryOptions.DeliveryType == DeliveryType.PicUp)
             {
+                discount += totalPrice / 10;
                 totalPrice = totalPrice - totalPrice / 10;
             }
 
             if (promocode.PromoUsed)
             {
                 var code = await _context.promocodes.FirstOrDefaultAsync(x => x.Code == promocode.UsedPromoCode);
+
+                discount += code.Discount;
 
                 totalPrice -= code.Discount;
             }
@@ -92,6 +97,7 @@ namespace WebShop.Main.BusinessLogic
                 UsedPromoCode = promocode.UsedPromoCode,
                 OrderStatus = OrderStatus.AwaitingConfirm,
                 PaymentMethod = paymentMethod,
+                Discount = discount,
                 DeliveryOptions = deliveryOptionsNew,
                 OrderMessage = "",
             };
@@ -164,11 +170,9 @@ namespace WebShop.Main.BusinessLogic
             return sb.ToString();
         }
 
-
         public async Task<Order> GetOrder(Guid orderId) =>
             await _context.orders.Where(x => x.OrderId == orderId).Include(x => x.DeliveryOptions).FirstOrDefaultAsync();
         
-
         public bool CheckCountOfProducts(List<CartItemModel> cartItems)
         {
             var products = _context.products;
@@ -186,6 +190,12 @@ namespace WebShop.Main.BusinessLogic
             return true;
         }
 
+        public async Task<Order> GetOrderById(string orderId) =>
+            await _context.orders
+            .Where(x => x.OrderId == Guid.Parse(orderId))
+            .Include(x => x.OrderLists)
+            .FirstOrDefaultAsync();
+            
         public async Task<string> ChangeOrderStatus(Order order, OrderStatus orderStatus)
         {
             order.OrderStatus = orderStatus;
@@ -205,7 +215,7 @@ namespace WebShop.Main.BusinessLogic
 
         public async Task<List<Order>> GetNewOrders()
         {
-            return await _context.orders.Where(x => x.OrderStatus != OrderStatus.Completed && x.OrderStatus != OrderStatus.Declined && x.OrderStatus != OrderStatus.Canceled)
+            return await _context.orders.Where(x => x.OrderStatus != OrderStatus.Completed && x.OrderStatus != OrderStatus.Declined && x.OrderStatus != OrderStatus.Canceled && x.OrderStatus != OrderStatus.AwaitingPayment)
                 .Include(x => x.OrderLists)
                 .Include(x=> x.DeliveryOptions)
                 .OrderByDescending(x => x.OrderTime)
@@ -239,7 +249,7 @@ namespace WebShop.Main.BusinessLogic
                 Currency = "UAH",
                 OrderId = orderId.ToString(),
                 Action = LiqPayRequestAction.InvoiceSend,
-                ResultUrl = "https://sushi-frontend-oleh213.vercel.app/",
+                ResultUrl = $"https://sushi-frontend-oleh213.vercel.app/order-info/{orderId.ToString()}",
                 Language = LiqPayRequestLanguage.UK,
                 ServerUrl = "https://web-shop.herokuapp.com/OrderActions/PaymentStatus",
             };

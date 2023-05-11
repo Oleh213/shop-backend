@@ -209,6 +209,27 @@ namespace Shop.Main.Actions
             }
         }
 
+        [HttpGet("GetOrderById")]
+        public async Task<IActionResult> GetOrderById([FromQuery] string orderId)
+        {
+            try
+            {
+                var order = await _orderActionsBL.GetOrderById(orderId);
+
+                if (order != null)
+                {
+                    return Ok(order);
+                }
+                else return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost("PaymentStatus")]
         public IActionResult PaymentStatus([FromForm] string data, [FromForm] string signature)
         {

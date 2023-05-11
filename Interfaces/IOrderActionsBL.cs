@@ -18,6 +18,8 @@ namespace WebShop.Main.Interfaces
 
         Task<List<Order>> GetNewOrders();
 
+        Task<Order> GetOrderById(string orderId);
+
         Task<User> GetUser(Guid userId);
 
         Task<Order> GetOrder(Guid orderId);

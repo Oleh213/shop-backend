@@ -30,6 +30,8 @@ namespace WebShop.Main.Conext
 
         public int OrderNumber { get; set; }
 
+        public double Discount { get; set; }
+
         public string? OrderMessage { get; set; }
 
         public DeliveryOptions DeliveryOptions { get; set; }
