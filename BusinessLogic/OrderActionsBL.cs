@@ -141,7 +141,7 @@ namespace WebShop.Main.BusinessLogic
 
             SentNotofication(newOrder, orderProduct);
 
-            return "Засовлення успішно створено!";
+            return $"https://sushi-frontend-oleh213.vercel.app/order-info/{newOrder.OrderId.ToString()}";
         }
 
         public string SentNotofication(Order newOrder, string orderProduct)
