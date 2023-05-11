@@ -1,35 +1,41 @@
 ﻿<Properties StartupConfiguration="{33BB7169-9433-49F9-92C5-B6A6E56A9453}|gdfg">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.sushi-backend PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BusinessLogic/OrderActionsBL.cs">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/Hubs/OrderHub.cs" relfile="Hubs/OrderHub.cs" line="14" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hubs/OrderHub.cs">
     <Files>
-      <File FileName="BusinessLogic/OrderActionsBL.cs" Line="208" Column="221" />
+      <File FileName="BusinessLogic/OrderActionsBL.cs" Line="198" Column="13" />
       <File FileName="Controllers/UserActions.cs" />
-      <File FileName="Controllers/OrderActions.cs" />
+      <File FileName="Controllers/OrderActions.cs" Line="216" Column="14" />
       <File FileName="Context/DeliveryOptions.cs" />
-      <File FileName="Context/Order.cs" />
+      <File FileName="Context/Order.cs" Line="33" Column="22" />
       <File FileName="Models/DeliveryOptionsModel.cs" />
-      <File FileName="BusinessLogic/ProductActionsBL.cs" Line="1" Column="1" />
-      <File FileName="Interfaces/IOrderActionsBL.cs" />
+      <File FileName="BusinessLogic/ProductActionsBL.cs" />
+      <File FileName="Interfaces/IOrderActionsBL.cs" Line="22" Column="1" />
       <File FileName="AuthOptions.cs" />
       <File FileName="appsettings.Development.json" />
       <File FileName="Program.cs" />
       <File FileName="Models/OrderModel.cs" />
-      <File FileName="BusinessLogic/LoggerBL.cs" />
+      <File FileName="BusinessLogic/LoggerBL.cs" Line="1" Column="1" />
       <File FileName="DBContext/DBContext.cs" />
       <File FileName="BusinessLogic/LogInActionsBL.cs" />
       <File FileName="Controllers/LoginActions.cs" />
+      <File FileName="Context/OrderList.cs" Line="1" Column="1" />
+      <File FileName="Hubs/OrderHub.cs" Line="21" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="sushi-backend" expanded="True">
+          <Node name="sushi-backend" expanded="True" selected="True">
             <Node name="sushi-backend" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="BusinessLogic" expanded="True">
-                <Node name="OrderActionsBL.cs" selected="True" />
-              </Node>
-              <Node name="Context" expanded="True" />
-              <Node name="Controllers" expanded="True" />
+              <Node name="BusinessLogic" expanded="True" />
+              <Node name="Hubs" expanded="True" />
               <Node name="Migrations" expanded="True" />
               <Node name="Models" expanded="True" />
               <Node name="Properties" expanded="True" />
@@ -41,12 +47,4 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/BusinessLogic/OrderActionsBL.cs" relfile="BusinessLogic/OrderActionsBL.cs" line="207" column="1" />
-      <Breakpoint file="/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/Controllers/OrderActions.cs" relfile="Controllers/OrderActions.cs" line="194" column="1" />
-    </BreakpointStore>
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

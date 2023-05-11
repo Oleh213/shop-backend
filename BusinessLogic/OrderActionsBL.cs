@@ -95,7 +95,7 @@ namespace WebShop.Main.BusinessLogic
                 PromoUsed = promocode.PromoUsed,
                 OrderNumber = _context.orders.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1,
                 UsedPromoCode = promocode.UsedPromoCode,
-                OrderStatus = OrderStatus.AwaitingConfirm,
+                OrderStatus = OrderStatus.AwaitingPayment,
                 PaymentMethod = paymentMethod,
                 Discount = discount,
                 DeliveryOptions = deliveryOptionsNew,
@@ -122,17 +122,17 @@ namespace WebShop.Main.BusinessLogic
 
             _context.orders.Add(newOrder);
 
-            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
-
             if (paymentMethod == PaymentMethod.CardOnline)
             {
-                newOrder.OrderStatus = OrderStatus.AwaitingPayment;
-
                 await _context.SaveChangesAsync();
 
                 var respon = await GoToPayment(contactInfo.Email, totalPrice, orderId);
 
                 return respon;
+            }
+            else
+            {
+                newOrder.OrderStatus = OrderStatus.AwaitingConfirm;
             }
 
             await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
@@ -285,6 +285,8 @@ namespace WebShop.Main.BusinessLogic
             var order = _context.orders.FirstOrDefault(x => x.OrderId.ToString() == orderId);
 
             order.OrderStatus = OrderStatus.AwaitingConfirm;
+
+            await _hubContext.Clients.All.SendAsync("MakeOrder", orderDTO);
 
             _context.SaveChanges();
 
