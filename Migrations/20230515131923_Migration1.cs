@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace sushi_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Migrations1 : Migration
+    public partial class Migration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,12 +65,27 @@ namespace sushi_backend.Migrations
                     SurName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderNumber = table.Column<int>(type: "int", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: false),
+                    OrderMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     OrderStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_orders", x => x.OrderId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "productOptions",
+                columns: table => new
+                {
+                    ProductOptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descriptions = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_productOptions", x => x.ProductOptionsId);
                 });
 
             migrationBuilder.CreateTable(
@@ -105,6 +120,30 @@ namespace sushi_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "deliveryOptions",
+                columns: table => new
+                {
+                    DeliveryOptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    DeliveryType = table.Column<int>(type: "int", nullable: false),
+                    DeliveryTimeOptions = table.Column<int>(type: "int", nullable: false),
+                    DeliveryTime = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_deliveryOptions", x => x.DeliveryOptionsId);
+                    table.ForeignKey(
+                        name: "FK_deliveryOptions_orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "products",
                 columns: table => new
                 {
@@ -116,6 +155,7 @@ namespace sushi_backend.Migrations
                     Available = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<int>(type: "int", nullable: false),
+                    ProductOptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -127,35 +167,11 @@ namespace sushi_backend.Migrations
                         principalTable: "categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "deliveryOptions",
-                columns: table => new
-                {
-                    DeliveryOptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    House = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Flat = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Entrance = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Domofon = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Flour = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeliveryTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PicUp = table.Column<bool>(type: "bit", nullable: false),
-                    Delivery = table.Column<bool>(type: "bit", nullable: false),
-                    Asap = table.Column<bool>(type: "bit", nullable: false),
-                    OnTime = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_deliveryOptions", x => x.DeliveryOptionsId);
                     table.ForeignKey(
-                        name: "FK_deliveryOptions_orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "orders",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_products_productOptions_ProductOptionsId",
+                        column: x => x.ProductOptionsId,
+                        principalTable: "productOptions",
+                        principalColumn: "ProductOptionsId");
                 });
 
             migrationBuilder.CreateTable(
@@ -207,6 +223,11 @@ namespace sushi_backend.Migrations
                 name: "IX_products_CategoryId",
                 table: "products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_products_ProductOptionsId",
+                table: "products",
+                column: "ProductOptionsId");
         }
 
         /// <inheritdoc />
@@ -238,6 +259,9 @@ namespace sushi_backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "categories");
+
+            migrationBuilder.DropTable(
+                name: "productOptions");
         }
     }
 }

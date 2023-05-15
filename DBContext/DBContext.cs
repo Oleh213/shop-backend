@@ -30,6 +30,9 @@ namespace WebShop.Main.DBContext
 
         public DbSet<ImagesSlider> imagesSliders { get; set; }
 
+        public DbSet<ProductOption> productOptions { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -56,7 +59,11 @@ namespace WebShop.Main.DBContext
                 .WithOne(x => x.Order)
                 .HasForeignKey<DeliveryOptions>(x => x.OrderId);
 
-
+            modelBuilder.Entity<ProductOption>()
+                .HasMany(x => x.Products)
+                .WithOne(x => x.ProductOption)
+                .HasForeignKey(x => x.ProductOptionsId);
+            
             modelBuilder.Entity<User>().HasKey(s => new { s.UserId });
 
             modelBuilder.Entity<Order>().HasKey(s => new { s.OrderId });
@@ -72,6 +79,8 @@ namespace WebShop.Main.DBContext
             modelBuilder.Entity<DeliveryOptions>().HasKey(s => new { s.DeliveryOptionsId });
 
             modelBuilder.Entity<ImagesSlider>().HasKey(s => new { s.ImagesSliderId });
+
+            modelBuilder.Entity<ProductOption>().HasKey(s => new { s.ProductOptionsId });
         }
     }
 }

@@ -26,8 +26,12 @@ builder.Services.AddSignalR();
 // Add services to the container.
 
 builder.Services.AddDbContext<ShopContext>(options =>
-                options.UseSqlServer("Server=tcp:server-for-project.database.windows.net,1433;Initial Catalog=shop-dataBase;Persist Security Info=False;User ID=oleh;Password=QWUngoSdd13Ss@123@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+                options.UseSqlServer("Server=tcp:server-for-project.database.windows.net,1433;Initial Catalog=sushi-dataBase;Persist Security Info=False;User ID=oleh;Password=QWUngoSdd13Ss@123@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
 builder.Services.AddControllers();
+
+//builder.Services.AddDbContext<ShopContext>(options =>
+//             options.UseSqlServer("Server=sushi-databse.cnehjzuti5hp.eu-west-1.rds.amazonaws.com;User ID=admin;Password=12332112;Database=sushiDataBase;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"));
+//builder.Services.AddControllers();
 
 var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
 

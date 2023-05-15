@@ -290,6 +290,9 @@ namespace sushi_backend.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ProductOptionsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Weight")
                         .HasColumnType("int");
 
@@ -297,7 +300,28 @@ namespace sushi_backend.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ProductOptionsId");
+
                     b.ToTable("products");
+                });
+
+            modelBuilder.Entity("sushi_backend.Context.ProductOption", b =>
+                {
+                    b.Property<Guid>("ProductOptionsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descriptions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductOptionsId");
+
+                    b.ToTable("productOptions");
                 });
 
             modelBuilder.Entity("WebShop.Main.Context.DeliveryOptions", b =>
@@ -338,7 +362,13 @@ namespace sushi_backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("sushi_backend.Context.ProductOption", "ProductOption")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductOptionsId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("ProductOption");
                 });
 
             modelBuilder.Entity("WebShop.Main.Conext.Order", b =>
@@ -350,6 +380,11 @@ namespace sushi_backend.Migrations
                 });
 
             modelBuilder.Entity("sushi_backend.Context.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("sushi_backend.Context.ProductOption", b =>
                 {
                     b.Navigation("Products");
                 });

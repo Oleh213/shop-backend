@@ -144,6 +144,7 @@ namespace WebShop.Main.BusinessLogic
             return $"https://sushi-frontend-oleh213.vercel.app/order-info/{newOrder.OrderId.ToString()}";
         }
 
+
         public string SentNotofication(Order newOrder, string orderProduct)
         {
             var telegramInfo = $"Нове замовлення №{newOrder.OrderNumber}! \n Час замовлення:{newOrder.OrderTime} \n  Продукти: \n" + orderProduct;

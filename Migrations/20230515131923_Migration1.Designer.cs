@@ -12,8 +12,8 @@ using WebShop.Main.DBContext;
 namespace sushi_backend.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20230427084623_Migrations1")]
-    partial class Migrations1
+    [Migration("20230515131923_Migration1")]
+    partial class Migration1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,12 +31,18 @@ namespace sushi_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderMessage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderNumber")
@@ -132,48 +138,28 @@ namespace sushi_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Asap")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Delivery")
-                        .HasColumnType("bit");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeliveryTime")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Domofon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DeliveryTimeOptions")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Entrance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DeliveryType")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Flat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
 
-                    b.Property<string>("Flour")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("House")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("OnTime")
-                        .HasColumnType("bit");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("PicUp")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DeliveryOptionsId");
 
@@ -307,6 +293,9 @@ namespace sushi_backend.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ProductOptionsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Weight")
                         .HasColumnType("int");
 
@@ -314,7 +303,28 @@ namespace sushi_backend.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ProductOptionsId");
+
                     b.ToTable("products");
+                });
+
+            modelBuilder.Entity("sushi_backend.Context.ProductOption", b =>
+                {
+                    b.Property<Guid>("ProductOptionsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Descriptions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductOptionsId");
+
+                    b.ToTable("productOptions");
                 });
 
             modelBuilder.Entity("WebShop.Main.Context.DeliveryOptions", b =>
@@ -355,7 +365,13 @@ namespace sushi_backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("sushi_backend.Context.ProductOption", "ProductOption")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductOptionsId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("ProductOption");
                 });
 
             modelBuilder.Entity("WebShop.Main.Conext.Order", b =>
@@ -367,6 +383,11 @@ namespace sushi_backend.Migrations
                 });
 
             modelBuilder.Entity("sushi_backend.Context.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("sushi_backend.Context.ProductOption", b =>
                 {
                     b.Navigation("Products");
                 });

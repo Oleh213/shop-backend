@@ -1,8 +1,8 @@
 ﻿using System;
 namespace sushi_backend.Context
 {
-	public class Product
-	{
+    public class Product
+    {
         public Guid ProductId { get; set; }
 
         public int Price { get; set; }
@@ -18,6 +18,10 @@ namespace sushi_backend.Context
         public int Discount { get; set; }
 
         public int Weight { get; set; }
+
+        public Guid? ProductOptionsId { get; set; }
+
+        public ProductOption? ProductOption { get; set; }
 
         public Category Category { get; set; }
 

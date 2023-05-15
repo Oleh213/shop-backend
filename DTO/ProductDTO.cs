@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using sushi_backend.Context;
 using WebShop.Main.Context;
 
 namespace WebShop.Main.DTO
@@ -26,6 +27,8 @@ namespace WebShop.Main.DTO
         public int Discount { get; set; }
 
         public string? Image { get; set; }
+
+        public ProductOption? ProductOption { get; set; }
     }
 }
 

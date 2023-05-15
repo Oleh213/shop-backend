@@ -86,6 +86,7 @@ namespace WebShop.Main.BusinessLogic
         {
             _context.products.Load();
             _context.categories.Load();
+            _context.productOptions.Load();
 
             var productDPOs = new List<ProductDTO>();
 
@@ -103,6 +104,7 @@ namespace WebShop.Main.BusinessLogic
                     Description = item.Description,
                     Weight = item.Weight,
                     Image = item.Image,
+                    ProductOption = item.ProductOption
                 });
             }
             return productDPOs;
