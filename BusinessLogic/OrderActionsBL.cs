@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Net;
 using System.Text;
@@ -69,7 +70,12 @@ namespace WebShop.Main.BusinessLogic
 
             var orderProduct = "";
 
-            DateTime newDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt"));
+            TimeZoneInfo ukraineTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Kiev");
+
+            DateTime utcTime = DateTime.UtcNow;
+
+            DateTime newDate = TimeZoneInfo.ConvertTimeFromUtc(utcTime, ukraineTimeZone);
+
 
             var deliveryOptionsNew = new DeliveryOptions
             {
