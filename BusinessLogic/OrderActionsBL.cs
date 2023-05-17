@@ -141,9 +141,9 @@ namespace WebShop.Main.BusinessLogic
                 newOrder.OrderStatus = OrderStatus.AwaitingConfirm;
             }
 
-            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
-
             await _context.SaveChangesAsync();
+
+            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
 
             SentNotofication(newOrder, orderProduct);
 
@@ -307,7 +307,7 @@ namespace WebShop.Main.BusinessLogic
 
             var products = _context.products;
 
-            var order = _context.orders.Where(x => x.OrderId.ToString() == orderId).Include(x=> x.OrderLists).FirstOrDefault();
+            var order = _context.orders.Where(x => x.OrderId.ToString() == orderId).Include(x=> x.OrderLists).Include(x=> x.DeliveryOptions).FirstOrDefault();
 
             string orderProduct = "";
 
@@ -325,6 +325,7 @@ namespace WebShop.Main.BusinessLogic
             _context.SaveChanges();
 
             _hubContext.Clients.All.SendAsync("MakeOrder", order);
+
 
             return true;
 
