@@ -194,6 +194,7 @@ namespace WebShop.Main.BusinessLogic
             await _context.orders
             .Where(x => x.OrderId == Guid.Parse(orderId))
             .Include(x => x.OrderLists)
+            .Include(x=> x.DeliveryOptions)
             .FirstOrDefaultAsync();
             
         public async Task<string> ChangeOrderStatus(Order order, OrderStatus orderStatus)
@@ -238,6 +239,22 @@ namespace WebShop.Main.BusinessLogic
                 return totalPrice;
             }
             return 0;
+        }
+
+        public static decimal CalculateDiscountedPrice(List<Product> products)
+        {
+            decimal totalPrice = products.Sum(p => p.Price); // Обчислюємо загальну ціну замовлення
+            int pizzaCount = products.Count(p => p.Category.CategoryName == "Сети"); // Обчислюємо кількість піц в замовленні
+            if (pizzaCount >= 3) // Якщо в замовленні є достатня кількість піц для знижки
+            {
+                decimal cheapestPizzaPrice = products.Where(p => p.Category.CategoryName == "Pizza").Min(p => p.Price); // Обчислюємо ціну найдешевшої піци
+                decimal discount = (pizzaCount / 3) * cheapestPizzaPrice; // Знижка дорівнює ціні найдешевшої піци, помноженій на кількість разів, які можна застосувати знижку
+                return totalPrice - discount; // Повертаємо нову ціну замовлення з урахуванням знижки
+            }
+            else // Якщо в замовленні менше піц, ніж потрібно для знижки
+            {
+                return totalPrice; // Повертаємо загальну ціну замовлення без знижки
+            }
         }
 
         public async Task<string> GoToPayment(string email, double amount, Guid orderId)

@@ -32,6 +32,7 @@ namespace WebShop.Main.DBContext
 
         public DbSet<ProductOption> productOptions { get; set; }
 
+        public DbSet<MagazineSettings> magazineSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -81,6 +82,8 @@ namespace WebShop.Main.DBContext
             modelBuilder.Entity<ImagesSlider>().HasKey(s => new { s.ImagesSliderId });
 
             modelBuilder.Entity<ProductOption>().HasKey(s => new { s.ProductOptionsId });
+
+            modelBuilder.Entity<MagazineSettings>().HasKey(s => new { s.MagazineSettingsId });
         }
     }
 }
