@@ -147,7 +147,7 @@ namespace WebShop.Main.BusinessLogic
 
             SentNotofication(newOrder, orderProduct);
 
-            return $"https://sushi-frontend-oleh213.vercel.app/order-info/{newOrder.OrderId.ToString()}";
+            return $"https://umamigroup.click/order-info/{newOrder.OrderId.ToString()}";
         }
 
 
@@ -272,7 +272,7 @@ namespace WebShop.Main.BusinessLogic
                 Currency = "UAH",
                 OrderId = orderId.ToString(),
                 Action = LiqPayRequestAction.InvoiceSend,
-                ResultUrl = $"https://sushi-frontend-oleh213.vercel.app/order-info/{orderId.ToString()}",
+                ResultUrl = $"https://umamigroup.click/order-info/{orderId.ToString()}",
                 Language = LiqPayRequestLanguage.UK,
                 ServerUrl = "https://web-shop.herokuapp.com/OrderActions/PaymentStatus",
             };
