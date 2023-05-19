@@ -238,7 +238,7 @@ namespace Shop.Main.Actions
             {
                 var resultOrders = await _orderActionsBL.GetUserOrders(orders);
 
-                if (resultOrders != null)
+                if (resultOrders.Count > 0)
                 {
                     return Ok(resultOrders);
                 }
