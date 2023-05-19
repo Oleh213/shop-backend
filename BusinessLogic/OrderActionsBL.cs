@@ -8,6 +8,7 @@ using System.Text;
 using LiqPay.SDK;
 using LiqPay.SDK.Dto;
 using LiqPay.SDK.Dto.Enums;
+using MailKit.Search;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ using Shop.Main.Actions;
 using sushi_backend.BusinessLogic;
 using sushi_backend.Context;
 using sushi_backend.Interfaces;
+using sushi_backend.Models;
 using WebShop.Main.Conext;
 using WebShop.Main.Context;
 using WebShop.Main.DBContext;
@@ -45,7 +47,7 @@ namespace WebShop.Main.BusinessLogic
             return await _context.users.FirstOrDefaultAsync(x => x.UserId == userId);
         }
 
-        public async Task<string> CreateNewOrder(List<CartItemModel> cartItems, DeliveryOptionsModel deliveryOptions, PaymentMethod paymentMethod, ContactInfo contactInfo, PromoCodeOrderModel promocode)
+        public async Task<OrderResponsModel> CreateNewOrder(List<CartItemModel> cartItems, DeliveryOptionsModel deliveryOptions, PaymentMethod paymentMethod, ContactInfo contactInfo, PromoCodeOrderModel promocode)
         {
             var orderId = Guid.NewGuid();
 
@@ -147,7 +149,13 @@ namespace WebShop.Main.BusinessLogic
 
             SentNotofication(newOrder, orderProduct);
 
-            return $"https://umamigroup.click/order-info/{newOrder.OrderId.ToString()}";
+            var orderRespons = new OrderResponsModel
+            {
+                Href = $"https://umamigroup.click/order-info/{newOrder.OrderId.ToString()}",
+                OrderId = orderId
+            };
+
+            return orderRespons;
         }
 
 
@@ -202,7 +210,15 @@ namespace WebShop.Main.BusinessLogic
             .Include(x => x.OrderLists)
             .Include(x=> x.DeliveryOptions)
             .FirstOrDefaultAsync();
-            
+
+        public async Task<List<Order>> GetUserOrders(string[] orders) =>
+            await _context.orders
+            .Where(x => orders.Any(xo=> xo == x.OrderId.ToString()))
+            .OrderByDescending(x => x.OrderNumber)
+            .Include(x => x.OrderLists)
+            .Include(x => x.DeliveryOptions)
+            .ToListAsync();
+
         public async Task<string> ChangeOrderStatus(Order order, OrderStatus orderStatus)
         {
             order.OrderStatus = orderStatus;
@@ -263,7 +279,7 @@ namespace WebShop.Main.BusinessLogic
             }
         }
 
-        public async Task<string> GoToPayment(string email, double amount, Guid orderId)
+        public async Task<OrderResponsModel> GoToPayment(string email, double amount, Guid orderId)
         {
             var invoiceRequest = new LiqPayRequest
             {
@@ -281,7 +297,8 @@ namespace WebShop.Main.BusinessLogic
 
             var response = await liqPayClient.RequestAsync("request", invoiceRequest);
 
-            return response.Href;
+            var orderRespons = new OrderResponsModel { Href = response.Href, OrderId = orderId };
+            return orderRespons;
         }
 
         public bool ConfirmPayment(string data, string signature)

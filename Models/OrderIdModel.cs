@@ -3,7 +3,7 @@ namespace WebShop.Models
 {
 	public class OrderIdModel
 	{
-		public Guid OrderId { get; set; }
+		public string OrderId { get; set; }
 	}
 }
 

@@ -25,6 +25,7 @@ using LiqPay.SDK.Dto;
 using LiqPay.SDK;
 using LiqPay.SDK.Dto.Enums;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using sushi_backend.Models;
 
 namespace Shop.Main.Actions
 {
@@ -66,7 +67,7 @@ namespace Shop.Main.Actions
 
                 var respons = await _orderActionsBL.CreateNewOrder(orderModel.cartItems, orderModel.deliveryInfo, orderModel.paymentMethod, orderModel.contactInfo, orderModel.promoCode);
 
-                var resOk = new Response<string>()
+                var resOk = new Response<OrderResponsModel>()
                 {
                     IsError = false,
                     ErrorMessage = "",
@@ -219,6 +220,27 @@ namespace Shop.Main.Actions
                 if (order != null)
                 {
                     return Ok(order);
+                }
+                else return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPatch("GetUserOrders")]
+        public async Task<IActionResult> GetUserOrders([FromBody] string[] orders)
+        {
+            try
+            {
+                var resultOrders = await _orderActionsBL.GetUserOrders(orders);
+
+                if (resultOrders != null)
+                {
+                    return Ok(resultOrders);
                 }
                 else return NotFound();
             }
