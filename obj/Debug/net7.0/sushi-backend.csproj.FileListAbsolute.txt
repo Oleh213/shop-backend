@@ -163,3 +163,6 @@
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Grpc.Net.Common.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Microsoft.EntityFrameworkCore.Proxies.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/OpenTelemetry.Api.dll
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/AWSSDK.Core.dll
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/AWSSDK.S3.dll
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/AWSSDK.Extensions.NETCore.Setup.dll

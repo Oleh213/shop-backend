@@ -38,6 +38,18 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AWSSDK.Core": {
+              "target": "Package",
+              "version": "[3.7.106.39, )"
+            },
+            "AWSSDK.Extensions.NETCore.Setup": {
+              "target": "Package",
+              "version": "[3.7.7, )"
+            },
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.7.104.19, )"
+            },
             "BCrypt.Net-Next": {
               "target": "Package",
               "version": "[4.0.3, )"

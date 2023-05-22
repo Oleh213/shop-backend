@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "PXeaHxputkDKx8DBmXQtVlcUn7N5V+LN3+NWqLdXciDoZFz422v1j8h3NUHdm2M5Bl5xH/Q31HIkMZMnbYcfDg==",
+  "dgSpecHash": "Lj7WOiZzxt80c/TgMQCl4wvemFrVyRBjan23KYUcqnZ/Xw66aqZM53XQf8tOmx+aCsF2t5m9C5Sm6VywduD5eg==",
   "success": true,
   "projectFilePath": "/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/sushi-backend.csproj",
   "expectedPackageFiles": [
+    "/Users/oleh/.nuget/packages/awssdk.core/3.7.106.39/awssdk.core.3.7.106.39.nupkg.sha512",
+    "/Users/oleh/.nuget/packages/awssdk.extensions.netcore.setup/3.7.7/awssdk.extensions.netcore.setup.3.7.7.nupkg.sha512",
+    "/Users/oleh/.nuget/packages/awssdk.s3/3.7.104.19/awssdk.s3.3.7.104.19.nupkg.sha512",
     "/Users/oleh/.nuget/packages/azure.core/1.24.0/azure.core.1.24.0.nupkg.sha512",
     "/Users/oleh/.nuget/packages/azure.identity/1.6.0/azure.identity.1.6.0.nupkg.sha512",
     "/Users/oleh/.nuget/packages/azure.security.keyvault.certificates/4.1.0/azure.security.keyvault.certificates.4.1.0.nupkg.sha512",

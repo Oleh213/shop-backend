@@ -1,5 +1,6 @@
 ﻿using System;
 using sushi_backend.Context;
+using sushi_backend.DTO;
 using WebShop.Main.Conext;
 using WebShop.Main.Context;
 using WebShop.Main.DTO;
@@ -25,6 +26,7 @@ namespace WebShop.Main.Interfaces
 
         ProductDTO OneProductsDTO(Product product);
 
+        Task<List<ProductOptionDTO>> ProductOptionsDTO();
 
     }
 }

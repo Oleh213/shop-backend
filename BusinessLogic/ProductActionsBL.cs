@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using WebShop.Models;
 using WebShop.Main.DTO;
 using sushi_backend.Context;
+using sushi_backend.DTO;
 
 namespace WebShop.Main.BusinessLogic
 {
@@ -135,6 +136,20 @@ namespace WebShop.Main.BusinessLogic
             };
 
             return productDTO;
+        }
+
+        public async Task<List<ProductOptionDTO>> ProductOptionsDTO()
+        {
+            var productOptionsDTO = new List<ProductOptionDTO>();
+
+            var productOptions = await _context.productOptions.ToListAsync();
+
+            foreach (var item in productOptions)
+            {
+                productOptionsDTO.Add(new ProductOptionDTO { ProductOptionsName = item.Name});
+            }
+
+            return (productOptionsDTO);
         }
     }
 }

@@ -13,6 +13,7 @@ using WebShop.Main.Interfaces;
 using WebShop.Main.Hubs;
 using sushi_backend.Interfaces;
 using sushi_backend.BusinessLogic;
+using Amazon.S3;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -93,6 +94,12 @@ builder.Services.AddScoped<IProductActionsBL, ProductActionsBL>();
 builder.Services.AddScoped<IPromocodeActionsBL, PromocodeActionsBL>();
 builder.Services.AddScoped<IRegistActionsBL, RegistActionsBL>();
 builder.Services.AddScoped<IUserActionsBL, UserActionsBL>();
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 var app = builder.Build();
 

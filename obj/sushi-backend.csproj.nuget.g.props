@@ -22,5 +22,7 @@
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_Extensions_ApiDescription_Server Condition=" '$(PkgMicrosoft_Extensions_ApiDescription_Server)' == '' ">/Users/oleh/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5</PkgMicrosoft_Extensions_ApiDescription_Server>
     <PkgEntityFramework Condition=" '$(PkgEntityFramework)' == '' ">/Users/oleh/.nuget/packages/entityframework/6.4.4</PkgEntityFramework>
+    <PkgAWSSDK_Core Condition=" '$(PkgAWSSDK_Core)' == '' ">/Users/oleh/.nuget/packages/awssdk.core/3.7.106.39</PkgAWSSDK_Core>
+    <PkgAWSSDK_S3 Condition=" '$(PkgAWSSDK_S3)' == '' ">/Users/oleh/.nuget/packages/awssdk.s3/3.7.104.19</PkgAWSSDK_S3>
   </PropertyGroup>
 </Project>

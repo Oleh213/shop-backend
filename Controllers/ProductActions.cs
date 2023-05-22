@@ -14,6 +14,11 @@ using Microsoft.AspNetCore.Authorization;
 using WebShop.Models;
 using WebShop.Main.DTO;
 using WebShop.Main.BusinessLogic;
+using sushi_backend.DTO;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Transfer;
+using Amazon.S3.Model;
 
 namespace Shop.Main.Actions
 {
@@ -28,10 +33,14 @@ namespace Shop.Main.Actions
 
         private Guid UserId => Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-        public ProductActions(IProductActionsBL productActionsBL, ILoggerBL loggerBL)
+        public IAmazonS3 _s3Client;
+
+        public ProductActions(IProductActionsBL productActionsBL, ILoggerBL loggerBL, IAmazonS3 s3Client)
         {
             _productActionsBL = productActionsBL;
             _loggerBL = loggerBL;
+            _s3Client = s3Client;
+
         }
 
         [HttpPost("AddProduct")]
@@ -214,5 +223,40 @@ namespace Shop.Main.Actions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpGet("GetProductOptions")]
+        public async Task<IActionResult> GetProductOptions()
+        {
+            try
+            {
+                var productOptions = await _productActionsBL.ProductOptionsDTO();
+
+                return productOptions != null ? Ok(productOptions) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFileAsync(IFormFile file, string? prefix)
+        {
+            var bucketExists = await _s3Client.DoesS3BucketExistAsync("images-shop-angular");
+            if (!bucketExists) return NotFound($"Bucket images-shop-angularInfo does not exist.");
+            var request = new PutObjectRequest()
+            {
+                BucketName = "images-shop-angular",
+                Key = string.IsNullOrEmpty(prefix) ? file.FileName : $"{prefix?.TrimEnd('/')}/{file.FileName}",
+                InputStream = file.OpenReadStream()
+            };
+            request.Metadata.Add("Content-Type", file.ContentType);
+            await _s3Client.PutObjectAsync(request);
+            return Ok($"File {prefix}/{file.FileName} uploaded to S3 successfully!");
+        }
+
     }
 }
