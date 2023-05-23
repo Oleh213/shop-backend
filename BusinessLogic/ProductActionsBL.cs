@@ -55,16 +55,25 @@ namespace WebShop.Main.BusinessLogic
         public async Task<Guid> AddProduct(ProductModel model)
         {
             Guid id = Guid.NewGuid();
+
+            var imageName = Guid.NewGuid();
+
+            var category = await _context.categories.FirstOrDefaultAsync(x => x.CategoryName == model.CategoryName);
+
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+
             _context.products.Add(new Product()
             {
-                Name = model.Name,
+                Name = model.ProductName,
                 Available = model.Available,
                 Price = model.Price,
                 ProductId = id,
                 Description = model.Description,
-                CategoryId = model.CategoryId,
-                Image = model.Img,
+                CategoryId = category.CategoryId,
+                Image = imageSource + imageName.ToString(),
             });
+
+            await UploadImage(model.File, imageName.ToString());
 
             await _context.SaveChangesAsync();
 
@@ -83,6 +92,7 @@ namespace WebShop.Main.BusinessLogic
             product.Available = model.Available;
             product.CategoryId = category.CategoryId;
             product.Description = model.Description;
+
             product.ProductOption = await _context.productOptions.FirstOrDefaultAsync(x => x.Name == model.ProductOptionName);
             if (model.File != null)
             {

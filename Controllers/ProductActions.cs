@@ -44,67 +44,67 @@ namespace Shop.Main.Actions
 
         }
 
-        //[HttpPost("AddProduct")]
-        //[Authorize]
-        //public async Task<IActionResult> AddProduct([FromBody] EditProductModel model)
-        //{
-        //    try
-        //    {
-        //        var user = await _productActionsBL.GetUser(UserId);
+        [HttpPost("AddProduct")]
+        [Authorize]
+        public async Task<IActionResult> AddProduct([FromForm] ProductModel model)
+        {
+            try
+            {
+                var user = await _productActionsBL.GetUser(UserId);
 
-        //        if (user != null)
-        //        {
-        //            if (user.Role == UserRole.Admin)
-        //            {
-        //                if (await _productActionsBL.CheckCategory(model.CategoryName))
-        //                {
-        //                    var product = await _productActionsBL.AddProduct(model);
+                if (user != null)
+                {
+                    if (user.Role == UserRole.Admin)
+                    {
+                        if (await _productActionsBL.CheckCategory(model.CategoryName))
+                        {
+                            var product = await _productActionsBL.AddProduct(model);
 
-        //                    var resOk = new Response<string>()
-        //                    {
-        //                        IsError = false,
-        //                        ErrorMessage = "",
-        //                        Data = $"Product successfully added!"
-        //                    };
+                            var resOk = new Response<string>()
+                            {
+                                IsError = false,
+                                ErrorMessage = "",
+                                Data = $"Product successfully added!"
+                            };
 
-        //                    _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' add new product! (ProductId:'{product}')");
-        //                    return Ok(resOk);
-        //                }
-        //                else
-        //                {
-        //                    var resEr = new Response<string>()
-        //                    {
-        //                        IsError = true,
-        //                        ErrorMessage = "401",
-        //                        Data = $"* Error, category dont't found *"
-        //                    };
+                            _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' add new product! (ProductId:'{product}')");
+                            return Ok(resOk);
+                        }
+                        else
+                        {
+                            var resEr = new Response<string>()
+                            {
+                                IsError = true,
+                                ErrorMessage = "401",
+                                Data = $"* Error, category dont't found *"
+                            };
 
-        //                    _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new product! (CategoryId:'{model.CategoryId}' dont't found)");
-        //                    return NotFound(resEr);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                var resEr = new Response<string>()
-        //                {
-        //                    IsError = true,
-        //                    ErrorMessage = "401",
-        //                    Data = $"* Error, you dont have permissions! *"
-        //                };
+                            _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new product! (CategoryId:'{model.CategoryName}' dont't found)");
+                            return NotFound(resEr);
+                        }
+                    }
+                    else
+                    {
+                        var resEr = new Response<string>()
+                        {
+                            IsError = true,
+                            ErrorMessage = "401",
+                            Data = $"* Error, you dont have permissions! *"
+                        };
 
-        //                _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new Product (Permission denied)");
-        //                return Unauthorized(resEr);
-        //            }
-        //        }
-        //        return Unauthorized();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+                        _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new Product (Permission denied)");
+                        return Unauthorized(resEr);
+                    }
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
 
-        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        //    }
-        //}
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         [HttpPatch("UpdateProduct")]
         [Authorize]
