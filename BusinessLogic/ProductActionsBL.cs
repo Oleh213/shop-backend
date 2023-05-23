@@ -15,6 +15,9 @@ using WebShop.Models;
 using WebShop.Main.DTO;
 using sushi_backend.Context;
 using sushi_backend.DTO;
+using sushi_backend.Models;
+using Amazon.S3.Model;
+using Amazon.S3;
 
 namespace WebShop.Main.BusinessLogic
 {
@@ -22,9 +25,16 @@ namespace WebShop.Main.BusinessLogic
     {
         private ShopContext _context;
 
-        public ProductActionsBL(ShopContext context)
+        private readonly IConfiguration _configuration;
+
+        public IAmazonS3 _s3Client;
+
+        
+        public ProductActionsBL(ShopContext context, IConfiguration configuration, IAmazonS3 s3Client)
         {
             _context = context;
+            _configuration = configuration;
+            _s3Client = s3Client;
         }
 
         public async Task<User> GetUser(Guid userId)
@@ -37,9 +47,9 @@ namespace WebShop.Main.BusinessLogic
             return await _context.products.FirstOrDefaultAsync(x => x.ProductId == productId);
         }
 
-        public async Task<bool> CheckCategory(Guid categoryId)
+        public async Task<bool> CheckCategory(string categoryName)
         {
-            return await _context.categories.AnyAsync(x => x.CategoryId == categoryId);
+            return await _context.categories.AnyAsync(x => x.CategoryName == categoryName);
         }
 
         public async Task<Guid> AddProduct(ProductModel model)
@@ -61,13 +71,24 @@ namespace WebShop.Main.BusinessLogic
             return id;
         }
 
-        public async Task<string> UpdateProduct(UpdateProductModel model, Product product)
+        public async Task<string> UpdateProduct(EditProductModel model, Product product)
         {
-            product.Name = model.Name;
-            product.Image = model.Img;
+            var imageName = Guid.NewGuid();
+
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+
+            var category = await _context.categories.FirstOrDefaultAsync(x => x.CategoryName == model.CategoryName);
+
+            product.Name = model.ProductName;
             product.Available = model.Available;
-            product.CategoryId = model.CategoryId;
+            product.CategoryId = category.CategoryId;
             product.Description = model.Description;
+            product.ProductOption = await _context.productOptions.FirstOrDefaultAsync(x => x.Name == model.ProductOptionName);
+            if (model.File != null)
+            {
+                product.Image = imageSource + imageName.ToString();
+                await UploadImage(model.File, imageName.ToString());
+            }
 
             if (product.Discount > 0)
             {
@@ -78,9 +99,26 @@ namespace WebShop.Main.BusinessLogic
                 product.Price = model.Price;
             }
 
+
             await _context.SaveChangesAsync();
 
             return "Ok";
+        }
+
+        public async Task<bool> UploadImage(IFormFile file, string imageName)
+        {
+            var bucketExists = await _s3Client.DoesS3BucketExistAsync("images-shop-angular");
+            if (!bucketExists)
+                return false;
+            var request = new PutObjectRequest()
+            {
+                BucketName = "images-shop-angular",
+                Key = string.IsNullOrEmpty("images") ? imageName : $"{"images"?.TrimEnd('/')}/{imageName}",
+                InputStream = file.OpenReadStream()
+            };
+            request.Metadata.Add("Content-Type", file.ContentType);
+            await _s3Client.PutObjectAsync(request);
+            return true;
         }
 
         public List<ProductDTO> AllProductsDTO()

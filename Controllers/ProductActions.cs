@@ -19,6 +19,7 @@ using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Amazon.S3.Model;
+using sushi_backend.Models;
 
 namespace Shop.Main.Actions
 {
@@ -43,71 +44,71 @@ namespace Shop.Main.Actions
 
         }
 
-        [HttpPost("AddProduct")]
-        [Authorize]
-        public async Task<IActionResult> AddProduct([FromBody] ProductModel model)
-        {
-            try
-            {
-                var user = await _productActionsBL.GetUser(UserId);
+        //[HttpPost("AddProduct")]
+        //[Authorize]
+        //public async Task<IActionResult> AddProduct([FromBody] EditProductModel model)
+        //{
+        //    try
+        //    {
+        //        var user = await _productActionsBL.GetUser(UserId);
 
-                if (user != null)
-                {
-                    if (user.Role == UserRole.Admin)
-                    {
-                        if (await _productActionsBL.CheckCategory(model.CategoryId))
-                        {
-                            var product = await _productActionsBL.AddProduct(model);
+        //        if (user != null)
+        //        {
+        //            if (user.Role == UserRole.Admin)
+        //            {
+        //                if (await _productActionsBL.CheckCategory(model.CategoryName))
+        //                {
+        //                    var product = await _productActionsBL.AddProduct(model);
 
-                            var resOk = new Response<string>()
-                            {
-                                IsError = false,
-                                ErrorMessage = "",
-                                Data = $"Product successfully added!"
-                            };
+        //                    var resOk = new Response<string>()
+        //                    {
+        //                        IsError = false,
+        //                        ErrorMessage = "",
+        //                        Data = $"Product successfully added!"
+        //                    };
 
-                            _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' add new product! (ProductId:'{product}')");
-                            return Ok(resOk);
-                        }
-                        else
-                        {
-                            var resEr = new Response<string>()
-                            {
-                                IsError = true,
-                                ErrorMessage = "401",
-                                Data = $"* Error, category dont't found *"
-                            };
+        //                    _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' add new product! (ProductId:'{product}')");
+        //                    return Ok(resOk);
+        //                }
+        //                else
+        //                {
+        //                    var resEr = new Response<string>()
+        //                    {
+        //                        IsError = true,
+        //                        ErrorMessage = "401",
+        //                        Data = $"* Error, category dont't found *"
+        //                    };
 
-                            _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new product! (CategoryId:'{model.CategoryId}' dont't found)");
-                            return NotFound(resEr);
-                        }
-                    }
-                    else
-                    {
-                        var resEr = new Response<string>()
-                        {
-                            IsError = true,
-                            ErrorMessage = "401",
-                            Data = $"* Error, you dont have permissions! *"
-                        };
+        //                    _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new product! (CategoryId:'{model.CategoryId}' dont't found)");
+        //                    return NotFound(resEr);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                var resEr = new Response<string>()
+        //                {
+        //                    IsError = true,
+        //                    ErrorMessage = "401",
+        //                    Data = $"* Error, you dont have permissions! *"
+        //                };
 
-                        _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new Product (Permission denied)");
-                        return Unauthorized(resEr);
-                    }
-                }
-                return Unauthorized();
-            }
-            catch (Exception ex)
-            {
-                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+        //                _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new Product (Permission denied)");
+        //                return Unauthorized(resEr);
+        //            }
+        //        }
+        //        return Unauthorized();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
 
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
         [HttpPatch("UpdateProduct")]
         [Authorize]
-        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductModel model)
+        public async Task<IActionResult> UpdateProduct([FromForm] EditProductModel model)
         {
             try
             {
@@ -117,7 +118,7 @@ namespace Shop.Main.Actions
                 {
                     if (user.Role == UserRole.Admin)
                     {
-                        if (await _productActionsBL.CheckCategory(model.CategoryId))
+                        if (await _productActionsBL.CheckCategory(model.CategoryName))
                         {
                             var product = await _productActionsBL.GetProduct(model.ProductId);
 
@@ -157,7 +158,7 @@ namespace Shop.Main.Actions
                                 Data = $"* Error, category dont't found *"
                             };
 
-                            _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted update informations about ProductId:'{model.ProductId}' (CategoryId:'{model.CategoryId}' don't found )");
+                            _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted update informations about ProductId:'{model.ProductId}' (CategoryId:'{model.CategoryName}' don't found )");
                             return NotFound(resEr);
                         }
                     }
@@ -243,19 +244,20 @@ namespace Shop.Main.Actions
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFileAsync(IFormFile file, string? prefix)
+        public async Task<IActionResult> UploadFileAsync([FromForm] UploudFileModel uploudFileModel)
         {
+            var file = uploudFileModel.File;
             var bucketExists = await _s3Client.DoesS3BucketExistAsync("images-shop-angular");
             if (!bucketExists) return NotFound($"Bucket images-shop-angularInfo does not exist.");
             var request = new PutObjectRequest()
             {
                 BucketName = "images-shop-angular",
-                Key = string.IsNullOrEmpty(prefix) ? file.FileName : $"{prefix?.TrimEnd('/')}/{file.FileName}",
+                Key = string.IsNullOrEmpty("images") ? Guid.NewGuid().ToString() : $"{"images"?.TrimEnd('/')}/{Guid.NewGuid().ToString()}",
                 InputStream = file.OpenReadStream()
             };
             request.Metadata.Add("Content-Type", file.ContentType);
             await _s3Client.PutObjectAsync(request);
-            return Ok($"File {prefix}/{file.FileName} uploaded to S3 successfully!");
+            return Ok($"File prefix/{file.FileName} uploaded to S3 successfully!");
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using sushi_backend.Context;
 using sushi_backend.DTO;
+using sushi_backend.Models;
 using WebShop.Main.Conext;
 using WebShop.Main.Context;
 using WebShop.Main.DTO;
@@ -12,11 +13,11 @@ namespace WebShop.Main.Interfaces
 	{
         Task<User> GetUser(Guid userId);
 
-        Task<bool> CheckCategory(Guid categoryId);
+        Task<bool> CheckCategory(string categoryName);
 
         Task<Guid> AddProduct(ProductModel model);
 
-        Task<string> UpdateProduct(UpdateProductModel model, Product product);
+        Task<string> UpdateProduct(EditProductModel model, Product product);
 
         Task<Product> GetProduct(Guid productId);
 
@@ -28,5 +29,6 @@ namespace WebShop.Main.Interfaces
 
         Task<List<ProductOptionDTO>> ProductOptionsDTO();
 
+        Task<bool> UploadImage(IFormFile file, string imageName);
     }
 }

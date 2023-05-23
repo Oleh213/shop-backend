@@ -28,7 +28,7 @@ namespace WebShop.Main.Actions
 
         private Guid UserId => Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-        [HttpPost("AddDiscount")]
+        [HttpPatch("AddDiscount")]
         [Authorize]
         public async Task<IActionResult> AddDiscount([FromBody] AddProductDiscountModel model)
         {
@@ -44,7 +44,7 @@ namespace WebShop.Main.Actions
 
                         if (product != null)
                         {
-                            if (await _discountActionsBL.UsePromocode(product, model.DiscountType, model.Discount))
+                            if (await _discountActionsBL.ApplyDiscount(product, model.Discount))
                             {
                                 var resOk = new Response<string>()
                                 {
@@ -53,12 +53,12 @@ namespace WebShop.Main.Actions
                                     Data = "Discount successfully added!"
                                 };
 
-                                _loggerBL.AddLog(LoggerLevel.Info, $"UserId:'{UserId}' added discount to ProductId:'{model.ProductId}'(Discount: {model.Discount} DiscountType: {model.DiscountType})");
+                                _loggerBL.AddLog(LoggerLevel.Info, $"UserId:'{UserId}' added discount to ProductId:'{model.ProductId}'(Discount: {model.Discount})");
                                 return Ok(resOk);
                             }
                             else
                             {
-                                _loggerBL.AddLog(LoggerLevel.Warn, $"UserId:'{UserId}' want add discount to ProductId:'{model.ProductId}'(Discount: {model.Discount} DiscountType: {model.DiscountType})");
+                                _loggerBL.AddLog(LoggerLevel.Warn, $"UserId:'{UserId}' want add discount to ProductId:'{model.ProductId}'(Discount: {model.Discount})");
                                 return NotFound();
                             }
                         }
@@ -88,7 +88,7 @@ namespace WebShop.Main.Actions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpPost("ClearDiscount")]
+        [HttpPatch("ClearDiscount")]
         [Authorize]
         public async Task<IActionResult> ClearDiscount([FromBody] ClearDiscountProduct model)
         {

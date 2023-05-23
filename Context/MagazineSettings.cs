@@ -5,7 +5,7 @@ namespace sushi_backend.Context
 	{
 		public Guid MagazineSettingsId { get; set; }
 
-		public bool MagazineSatus { get; set; }
+		public bool Key { get; set; }
 
 		public bool OnePlusOneAction { get; set; }
     }

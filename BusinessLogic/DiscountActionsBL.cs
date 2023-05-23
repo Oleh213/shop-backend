@@ -26,43 +26,28 @@ namespace WebShop.Main.BusinessLogic
             return await _context.products.FirstOrDefaultAsync(x => x.ProductId == productId);
         }
 
-        public async Task<bool> UsePromocode(Product product, int discountType, int discount)
+        public async Task<bool> ApplyDiscount(Product product, int discount)
         {
-            if (discountType == 1)
+            if (product.Discount > 0)
             {
-                if(product.Discount > 0)
-                {
-                    product.Price += product.Discount;
-                }
-                double price = Convert.ToDouble(product.Price) * (Convert.ToDouble(discount) / 100);
-                product.Price = product.Price - Convert.ToInt32(price);
-                product.Discount = Convert.ToInt32(price);
-
-                await _context.SaveChangesAsync();
-                return true;
+                product.Price += product.Discount;
             }
-            else if (discountType == 2)
+
+            if (product.Price > discount)
             {
-                if (product.Discount > 0)
-                {
-                    product.Price += product.Discount;
-                }
-
-                if (product.Price > discount)
-                {
-                    product.Price -= discount;
-                    product.Discount = discount;
-                }
-                else
-                {
-                    product.Discount = product.Price - 1;
-                    product.Price = 1;
-                }
-
-                await _context.SaveChangesAsync();
-                return true;
+                product.Price -= discount;
+                product.Discount = discount;
             }
-            else return false;
+            else
+            {
+                product.Discount = product.Price - 1;
+                product.Price = 1;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+
+
 
         }
 

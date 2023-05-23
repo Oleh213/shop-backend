@@ -7,8 +7,6 @@ namespace WebShop.Models
 
         public int Discount { get; set; }
 
-        public int DiscountType { get; set; }
-
     }
 }
 

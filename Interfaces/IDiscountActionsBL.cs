@@ -10,11 +10,9 @@ namespace WebShop.Main.Interfaces
 
         Task<Product> GetProduct(Guid productId);
 
-        Task<bool> UsePromocode(Product product, int discountType, int discount);
+        Task<bool> ApplyDiscount(Product product, int discount);
 
         Task<string> ClearDiscount(Product product);
-
-
     }
 }
 
