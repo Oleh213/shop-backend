@@ -289,7 +289,7 @@ namespace WebShop.Main.BusinessLogic
                 Action = LiqPayRequestAction.InvoiceSend,
                 ResultUrl = $"https://umamigroup.click/order-info/{orderId.ToString()}",
                 Language = LiqPayRequestLanguage.UK,
-                ServerUrl = "https://web-shop.herokuapp.com/OrderActions/PaymentStatus",
+                ServerUrl = "https://web-shop.herokuapp.com/api/OrderController/PaymentStatus",
             };
 
             var liqPayClient = new LiqPayClient("sandbox_i35438868943", "sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz");
