@@ -4,7 +4,7 @@ using WebShop.Models;
 
 namespace WebShop.Main.Interfaces
 {
-	public interface IPromocodeActionsBL
+	public interface IPromoCodeActionsBL
 	{
         Task<Promocode> GetPromocode(string code);
     }

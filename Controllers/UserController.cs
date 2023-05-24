@@ -13,14 +13,14 @@ using WebShop.Main.Context;
 namespace WebShop.Main.Actions
 {
     [ApiController]
-    [Route("UserActions")]
-    public class UserActions : ControllerBase
+    [Route("api/UserController")]
+    public class UserController : ControllerBase
     {
         private IUserActionsBL _userActionsBL;
 
         private readonly ILoggerBL _loggerBL;
 
-        public UserActions(IUserActionsBL userActionsBL, ILoggerBL loggerBL)
+        public UserController(IUserActionsBL userActionsBL, ILoggerBL loggerBL)
         {
             _userActionsBL = userActionsBL;
             _loggerBL = loggerBL;

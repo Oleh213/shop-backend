@@ -91,7 +91,7 @@ builder.Services.AddScoped<IEmailSender, EmailSenderBL>();
 builder.Services.AddScoped<IImageSliderActionsBL, ImageSliderActionsBL>();
 builder.Services.AddScoped<IOrderActionsBL, OrderActionsBL>();
 builder.Services.AddScoped<IProductActionsBL, ProductActionsBL>();
-builder.Services.AddScoped<IPromocodeActionsBL, PromocodeActionsBL>();
+builder.Services.AddScoped<IPromoCodeActionsBL, PromoCodeActionsBL>();
 builder.Services.AddScoped<IRegistActionsBL, RegistActionsBL>();
 builder.Services.AddScoped<IUserActionsBL, UserActionsBL>();
 

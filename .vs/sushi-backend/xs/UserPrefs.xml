@@ -1,64 +1,57 @@
 ﻿<Properties StartupConfiguration="{33BB7169-9433-49F9-92C5-B6A6E56A9453}|gdfg">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.sushi-backend PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/DiscountActions.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BusinessLogic/ProductActionsBL.cs">
     <Files>
-      <File FileName="BusinessLogic/OrderActionsBL.cs" Line="217" Column="31" />
-      <File FileName="Controllers/UserActions.cs" Line="1" Column="1" />
-      <File FileName="Controllers/OrderActions.cs" Line="232" Column="10" />
-      <File FileName="Context/DeliveryOptions.cs" Line="1" Column="1" />
-      <File FileName="Context/Order.cs" Line="1" Column="1" />
+      <File FileName="BusinessLogic/OrderActionsBL.cs" Line="80" Column="1" />
+      <File FileName="Controllers/UserActions.cs" />
+      <File FileName="Controllers/OrderActions.cs" />
+      <File FileName="Context/DeliveryOptions.cs" />
+      <File FileName="Context/Order.cs" />
       <File FileName="Models/DeliveryOptionsModel.cs" />
-      <File FileName="BusinessLogic/ProductActionsBL.cs" Line="96" Column="14" />
-      <File FileName="Interfaces/IOrderActionsBL.cs" Line="26" Column="49" />
-      <File FileName="AuthOptions.cs" Line="17" Column="36" />
-      <File FileName="appsettings.Development.json" Line="18" Column="84" />
-      <File FileName="Program.cs" Line="54" Column="29" />
+      <File FileName="BusinessLogic/ProductActionsBL.cs" Line="133" Column="27" />
+      <File FileName="Interfaces/IOrderActionsBL.cs" />
+      <File FileName="AuthOptions.cs" />
+      <File FileName="appsettings.Development.json" />
+      <File FileName="Program.cs" />
       <File FileName="Models/OrderModel.cs" />
-      <File FileName="BusinessLogic/LoggerBL.cs" Line="21" Column="1" />
-      <File FileName="DBContext/DBContext.cs" Line="29" Column="50" />
+      <File FileName="BusinessLogic/LoggerBL.cs" />
+      <File FileName="DBContext/DBContext.cs" />
       <File FileName="BusinessLogic/LogInActionsBL.cs" />
-      <File FileName="Controllers/LoginActions.cs" Line="1" Column="1" />
-      <File FileName="Context/OrderList.cs" Line="1" Column="1" />
+      <File FileName="Controllers/LoginActions.cs" />
+      <File FileName="Context/OrderList.cs" />
       <File FileName="Hubs/OrderHub.cs" />
-      <File FileName="Context/Product.cs" Line="24" Column="31" />
-      <File FileName="Context/Category.cs" Line="15" Column="1" />
-      <File FileName="Context/ProductOption.cs" Line="16" Column="6" />
-      <File FileName="Controllers/ProductActions.cs" Line="111" Column="74" />
-      <File FileName="Migrations/20230515121050_Migration1.cs" Line="115" Column="83" />
-      <File FileName="Context/User.cs" Line="1" Column="1" />
-      <File FileName="Interfaces/IProductActionsBL.cs" Line="20" Column="75" />
-      <File FileName="BusinessLogic/PromocodeActionsBL.cs" Line="23" Column="2" />
-      <File FileName="DTO/ProductDTO.cs" Line="31" Column="30" />
-      <File FileName="Migrations/20230515124245_Migration2.cs" Line="53" Column="1" />
-      <File FileName="Context/MagazineSettings.cs" Line="8" Column="14" />
-      <File FileName="Models/OrderResponsModel.cs" Line="4" Column="32" />
-      <File FileName="Models/OrderIdModel.cs" Line="4" Column="15" />
-      <File FileName="Models/CartItemModel.cs" Line="6" Column="18" />
-      <File FileName="BusinessLogic/CategoryActionsBL.cs" Line="35" Column="10" />
-      <File FileName="DTO/ProductOptionsDTO.cs" Line="6" Column="31" />
-      <File FileName="DTO/UserDTO.cs" Line="1" Column="1" />
-      <File FileName="appsettings.json" Line="22" Column="1" />
-      <File FileName="Models/UploudFileModel.cs" Line="5" Column="3" />
-      <File FileName="Models/EditProductModel.cs" Line="25" Column="1" />
-      <File FileName="Models/ProductModel.cs" Line="6" Column="18" />
-      <File FileName="BusinessLogic/DiscountActionsBL.cs" Line="12" Column="34" />
-      <File FileName="Context/ImagesSlider.cs" Line="1" Column="1" />
-      <File FileName="Controllers/DiscountActions.cs" Line="90" Column="10" />
-      <File FileName="Interfaces/IDiscountActionsBL.cs" Line="13" Column="23" />
-      <File FileName="Models/AddProductDiscountModel.cs" Line="9" Column="1" />
+      <File FileName="Context/Product.cs" />
+      <File FileName="Context/Category.cs" />
+      <File FileName="Context/ProductOption.cs" />
+      <File FileName="Controllers/ProductActions.cs" />
+      <File FileName="Context/User.cs" />
+      <File FileName="Interfaces/IProductActionsBL.cs" />
+      <File FileName="BusinessLogic/PromocodeActionsBL.cs" />
+      <File FileName="DTO/ProductDTO.cs" />
+      <File FileName="Context/MagazineSettings.cs" />
+      <File FileName="Models/OrderResponsModel.cs" />
+      <File FileName="Models/OrderIdModel.cs" />
+      <File FileName="Models/CartItemModel.cs" />
+      <File FileName="BusinessLogic/CategoryActionsBL.cs" />
+      <File FileName="DTO/UserDTO.cs" />
+      <File FileName="appsettings.json" />
+      <File FileName="Models/UploudFileModel.cs" />
+      <File FileName="Models/EditProductModel.cs" Line="17" Column="1" />
+      <File FileName="Models/ProductModel.cs" />
+      <File FileName="BusinessLogic/DiscountActionsBL.cs" />
+      <File FileName="Context/ImagesSlider.cs" />
+      <File FileName="Controllers/DiscountActions.cs" />
+      <File FileName="Interfaces/IDiscountActionsBL.cs" />
+      <File FileName="Models/AddProductDiscountModel.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="sushi-backend" expanded="True" selected="True">
+          <Node name="sushi-backend" expanded="True">
             <Node name="sushi-backend" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="BusinessLogic" expanded="True" />
+              <Node name="BusinessLogic" expanded="True">
+                <Node name="ProductActionsBL.cs" selected="True" />
+              </Node>
               <Node name="Controllers" expanded="True" />
               <Node name="DBContext" expanded="True" />
               <Node name="DTO" expanded="True" />
@@ -73,4 +66,10 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.sushi-backend PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

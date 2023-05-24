@@ -17,14 +17,14 @@ using static Azure.Core.HttpHeader;
 namespace Shop.Main.Actions
 {
     [ApiController]
-    [Route("[controller]")]
-    public class RegistActions : ControllerBase
+    [Route("api/RegistController")]
+    public class RegistController : ControllerBase
     {
         private IRegistActionsBL _registActionsBL;
 
         private readonly ILoggerBL _loggerBL;
 
-        public RegistActions(IRegistActionsBL registActionsBL, ILoggerBL loggerBL)
+        public RegistController(IRegistActionsBL registActionsBL, ILoggerBL loggerBL)
         {
             _registActionsBL = registActionsBL;
             _loggerBL = loggerBL;

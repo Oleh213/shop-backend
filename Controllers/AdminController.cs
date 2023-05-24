@@ -11,25 +11,26 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using WebShop.Main.Context;
 using sushi_backend.Interfaces;
-using WebShop.Models;
+using System.Net;
+using System.Text;
 
 namespace Shop.Main.Actions
 {
     [ApiController]
-    [Route("CartItemActions")]
-    public class CartItemActions : ControllerBase
+    [Route("api/AddAdminController")]
+    public class AddAdminController : ControllerBase
     {
 
-        private readonly ICartItemActionsBL _cartItemActionsBL;
+        private readonly IAdminActionsBL _addAdminActionsBL;
 
         private readonly ILoggerBL _loggerBL;
 
         private IEmailSender _emailSender;
 
 
-        public CartItemActions(ICartItemActionsBL cartItemActionsBL, ILoggerBL loggerBL, IEmailSender emailSender)
+        public AddAdminController(IAdminActionsBL addAdminActionsBL, ILoggerBL loggerBL, IEmailSender emailSender)
         {
-            _cartItemActionsBL = cartItemActionsBL;
+            _addAdminActionsBL = addAdminActionsBL;
             _loggerBL = loggerBL;
             _emailSender = emailSender;
         }
@@ -37,22 +38,13 @@ namespace Shop.Main.Actions
         private Guid UserId => Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
 
-        [HttpPatch("ShowCart")]
-        public async Task<IActionResult> ShowCart([FromBody] List<CartItemModel> cartItems)
+        [HttpPut("AddAdmin")]
+        public async Task<IActionResult> AddAdmin()
         {
             try
             {
-                if(cartItems.Count() > 0)
-                {
-                   var cartItemsDTO =  _cartItemActionsBL.CartItemsDTO(cartItems);
 
-                    return Ok(cartItemsDTO);
-
-                }
-                else
-                {
-                    return NotFound();
-                }
+                return Ok();
             }
             catch (Exception ex)
             {

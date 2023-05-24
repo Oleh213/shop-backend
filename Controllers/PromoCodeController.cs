@@ -14,14 +14,14 @@ using WebShop.Models;
 namespace Shop.Main.Actions
 {
     [ApiController]
-    [Route("[controller]")]
-    public class PromocodeActions : ControllerBase
+    [Route("api/PromoCodeController")]
+    public class PromoCodeController : ControllerBase
     {
-        private IPromocodeActionsBL _promocodeActionsBL;
+        private IPromoCodeActionsBL _promocodeActionsBL;
 
         private readonly ILoggerBL _loggerBL;
 
-        public PromocodeActions(IPromocodeActionsBL promocodeActionsBL, ILoggerBL loggerBL)
+        public PromoCodeController(IPromoCodeActionsBL promocodeActionsBL, ILoggerBL loggerBL)
         {
             _promocodeActionsBL = promocodeActionsBL;
             _loggerBL = loggerBL;

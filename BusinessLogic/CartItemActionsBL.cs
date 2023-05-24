@@ -1,4 +1,5 @@
 ﻿using System;
+using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
 using sushi_backend.Context;
 using WebShop.Main.Conext;
@@ -13,13 +14,18 @@ namespace WebShop.Main.BusinessLogic
     {
         private readonly ShopContext _context;
 
-        public CartItemActionsBL(ShopContext context)
+        private readonly IConfiguration _configuration;
+
+        public CartItemActionsBL(ShopContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         public List<CartItemDTO> CartItemsDTO(List<CartItemModel> cartOfUser)
         {
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+
             if (cartOfUser != null)
             {
                 var newCartOfUsers = new List<CartItemDTO>();
@@ -32,7 +38,7 @@ namespace WebShop.Main.BusinessLogic
                     {
                         ProductName = item.Name,
                         ProductId = item.ProductId,
-                        Image = item.Image,
+                        Image = imageSource + item.Image,
                         Price = item.Price,
                         Available = item.Available,
                         Weight = item.Weight,

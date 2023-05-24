@@ -11,7 +11,7 @@ using sushi_backend.Interfaces;
 namespace sushi_backend.Controllers
 {
     [ApiController]
-    [Route("ImagesSliderController")]
+    [Route("api/ImagesSliderController")]
     public class ImagesSliderController : ControllerBase
     { 
     

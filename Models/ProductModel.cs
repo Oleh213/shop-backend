@@ -19,7 +19,7 @@ namespace WebShop.Models
 
         public IFormFile File { get; set; }
 
-        public string ProductOptionName { get; set; }
+        public string? ProductOptionName { get; set; }
     }
 }
 

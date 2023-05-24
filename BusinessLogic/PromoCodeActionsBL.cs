@@ -6,11 +6,11 @@ using WebShop.Main.Interfaces;
 
 namespace WebShop.Main.BusinessLogic
 {
-    public class PromocodeActionsBL : IPromocodeActionsBL
+    public class PromoCodeActionsBL : IPromoCodeActionsBL
     {
         private ShopContext _context;
 
-        public PromocodeActionsBL(ShopContext context)
+        public PromoCodeActionsBL(ShopContext context)
         {
             _context = context;
         }

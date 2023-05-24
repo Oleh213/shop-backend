@@ -25,8 +25,8 @@ namespace Shop.Main.Actions
 {
 
     [ApiController]
-    [Route("[controller]")]
-    public class ProductActions : ControllerBase
+    [Route("api/ProductController")]
+    public class ProductController : ControllerBase
     {
         private IProductActionsBL _productActionsBL;
 
@@ -36,7 +36,7 @@ namespace Shop.Main.Actions
 
         public IAmazonS3 _s3Client;
 
-        public ProductActions(IProductActionsBL productActionsBL, ILoggerBL loggerBL, IAmazonS3 s3Client)
+        public ProductController(IProductActionsBL productActionsBL, ILoggerBL loggerBL, IAmazonS3 s3Client)
         {
             _productActionsBL = productActionsBL;
             _loggerBL = loggerBL;

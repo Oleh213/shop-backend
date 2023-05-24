@@ -78,7 +78,6 @@ namespace WebShop.Main.BusinessLogic
 
             DateTime newDate = TimeZoneInfo.ConvertTimeFromUtc(utcTime, ukraineTimeZone);
 
-
             var deliveryOptionsNew = new DeliveryOptions
             {
                 DeliveryOptionsId = Guid.NewGuid(),

@@ -13,14 +13,14 @@ namespace WebShop.Main.Actions
 {
 
     [ApiController]
-    [Route("[controller]")]
-    public class DiscountActions : ControllerBase
+    [Route("api/DiscountController")]
+    public class DiscountController : ControllerBase
     {
         private IDiscountActionsBL _discountActionsBL;
 
         private readonly ILoggerBL _loggerBL;
 
-        public DiscountActions(IDiscountActionsBL discountActionsBL, ILoggerBL loggerBL)
+        public DiscountController(IDiscountActionsBL discountActionsBL, ILoggerBL loggerBL)
         {
             _discountActionsBL = discountActionsBL;
             _loggerBL = loggerBL;

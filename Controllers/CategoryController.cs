@@ -19,14 +19,14 @@ using WebShop.Main.Context;
 namespace Shop.Main.Actions
 {
     [ApiController]
-    [Route("CategoryActions")]
-    public class CategoryActions : ControllerBase
+    [Route("api/CategoryController")]
+    public class CategoryController : ControllerBase
     {
         private ICategoryActionsBL _categoryActionsBL;
 
         private readonly ILoggerBL _loggerBL;
 
-        public CategoryActions(ICategoryActionsBL categoryActionsBL, ILoggerBL loggerBL)
+        public CategoryController(ICategoryActionsBL categoryActionsBL, ILoggerBL loggerBL)
         {
             _categoryActionsBL = categoryActionsBL;
             _loggerBL = loggerBL;

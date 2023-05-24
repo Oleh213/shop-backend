@@ -30,8 +30,8 @@ using sushi_backend.Models;
 namespace Shop.Main.Actions
 {
     [ApiController]
-    [Route("OrderActions")]
-    public class OrderActions : ControllerBase
+    [Route("api/OrderController")]
+    public class OrderController : ControllerBase
     {
         private IOrderActionsBL _orderActionsBL;
 
@@ -39,7 +39,7 @@ namespace Shop.Main.Actions
 
         private readonly IHubContext<OrderHub> _hubContext;
 
-        public OrderActions(IOrderActionsBL orderActionsBL, ILoggerBL loggerBL, IHubContext<OrderHub> hubContext)
+        public OrderController(IOrderActionsBL orderActionsBL, ILoggerBL loggerBL, IHubContext<OrderHub> hubContext)
         {
             _orderActionsBL = orderActionsBL;
             _loggerBL = loggerBL;

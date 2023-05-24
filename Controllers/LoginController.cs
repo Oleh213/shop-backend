@@ -19,14 +19,14 @@ namespace Shop.Main.Actions
 {
 
     [ApiController]
-    [Route("[controller]")] 
-    public class LogInActions : ControllerBase  
+    [Route("api/LogInController")]
+    public class LogInController : ControllerBase  
     {
         private readonly ILoggerBL _loggerBL;
 
         private ILogInActionsBL _logInActionsBL;
 
-        public LogInActions(ILogInActionsBL logInActionsBL, ILoggerBL loggerBL)
+        public LogInController(ILogInActionsBL logInActionsBL, ILoggerBL loggerBL)
         {
             _logInActionsBL = logInActionsBL;
             _loggerBL = loggerBL;

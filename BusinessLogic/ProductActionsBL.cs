@@ -18,6 +18,8 @@ using sushi_backend.DTO;
 using sushi_backend.Models;
 using Amazon.S3.Model;
 using Amazon.S3;
+using Amazon.S3.Transfer;
+using Amazon;
 
 namespace WebShop.Main.BusinessLogic
 {
@@ -28,7 +30,6 @@ namespace WebShop.Main.BusinessLogic
         private readonly IConfiguration _configuration;
 
         public IAmazonS3 _s3Client;
-
         
         public ProductActionsBL(ShopContext context, IConfiguration configuration, IAmazonS3 s3Client)
         {
@@ -60,7 +61,6 @@ namespace WebShop.Main.BusinessLogic
 
             var category = await _context.categories.FirstOrDefaultAsync(x => x.CategoryName == model.CategoryName);
 
-            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
 
             _context.products.Add(new Product()
             {
@@ -70,7 +70,7 @@ namespace WebShop.Main.BusinessLogic
                 ProductId = id,
                 Description = model.Description,
                 CategoryId = category.CategoryId,
-                Image = imageSource + imageName.ToString(),
+                Image = imageName.ToString(),
             });
 
             await UploadImage(model.File, imageName.ToString());
@@ -84,9 +84,9 @@ namespace WebShop.Main.BusinessLogic
         {
             var imageName = Guid.NewGuid();
 
-            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
-
             var category = await _context.categories.FirstOrDefaultAsync(x => x.CategoryName == model.CategoryName);
+
+            await DeleteImage(product.Image);
 
             product.Name = model.ProductName;
             product.Available = model.Available;
@@ -96,7 +96,7 @@ namespace WebShop.Main.BusinessLogic
             product.ProductOption = await _context.productOptions.FirstOrDefaultAsync(x => x.Name == model.ProductOptionName);
             if (model.File != null)
             {
-                product.Image = imageSource + imageName.ToString();
+                product.Image = imageName.ToString();
                 await UploadImage(model.File, imageName.ToString());
             }
 
@@ -117,17 +117,55 @@ namespace WebShop.Main.BusinessLogic
 
         public async Task<bool> UploadImage(IFormFile file, string imageName)
         {
-            var bucketExists = await _s3Client.DoesS3BucketExistAsync("images-shop-angular");
-            if (!bucketExists)
-                return false;
-            var request = new PutObjectRequest()
+            //var bucketExists = await _s3Client.DoesS3BucketExistAsync("images-shop-angular");
+            //if (!bucketExists)
+            //    return false;
+            //var request = new PutObjectRequest()
+            //{
+            //    BucketName = "images-shop-angular",
+            //    Key = string.IsNullOrEmpty("images") ? imageName : $"{"images"ż.TrimEnd('/')}/{imageName}",
+            //    InputStream = file.OpenReadStream()
+            //};
+            //request.Metadata.Add("Content-Type", file.ContentType);
+            //await _s3Client.PutObjectAsync(request);
+            //return true;
+            using (var client = new AmazonS3Client("AKIATEKBWQQJRIHN2JDQ", "dNdvJlUgnOeq2EswfIuOOSqAr9nkb0iG+wIgBK/a", RegionEndpoint.EUWest1))
             {
-                BucketName = "images-shop-angular",
-                Key = string.IsNullOrEmpty("images") ? imageName : $"{"images"?.TrimEnd('/')}/{imageName}",
-                InputStream = file.OpenReadStream()
-            };
-            request.Metadata.Add("Content-Type", file.ContentType);
-            await _s3Client.PutObjectAsync(request);
+                using (var newMemoryStream = new MemoryStream())
+                {
+                    file.CopyTo(newMemoryStream);
+
+                    var uploadRequest = new TransferUtilityUploadRequest
+                    {
+                        InputStream = newMemoryStream,
+                        Key = string.IsNullOrEmpty("images") ? imageName : $"{"images"?.TrimEnd('/')}/{imageName}",
+                        BucketName = "images-shop-angular",
+                        CannedACL = S3CannedACL.PublicRead
+                    };
+
+                    var fileTransferUtility = new TransferUtility(client);
+                    await fileTransferUtility.UploadAsync(uploadRequest);
+                }
+            }
+            return true;
+        }
+
+        public async Task<bool> DeleteImage(string imageName)
+        {
+            using (var client = new AmazonS3Client("AKIATEKBWQQJRIHN2JDQ", "dNdvJlUgnOeq2EswfIuOOSqAr9nkb0iG+wIgBK/a", RegionEndpoint.EUWest1))
+            {
+                using (var newMemoryStream = new MemoryStream())
+                {
+                    var deleteRequest = new DeleteObjectRequest
+                    {
+                        Key = $"{"images"?.TrimEnd('/')}/{imageName}",
+                        BucketName = "images-shop-angular",
+                    };
+
+                    var delete = await client.DeleteObjectAsync(deleteRequest);
+
+                }
+            }
             return true;
         }
 
@@ -136,6 +174,8 @@ namespace WebShop.Main.BusinessLogic
             _context.products.Load();
             _context.categories.Load();
             _context.productOptions.Load();
+
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
 
             var productDPOs = new List<ProductDTO>();
 
@@ -152,7 +192,7 @@ namespace WebShop.Main.BusinessLogic
                     Discount = item.Discount,
                     Description = item.Description,
                     Weight = item.Weight,
-                    Image = item.Image,
+                    Image = imageSource + item.Image,
                     ProductOption = item.ProductOption
                 });
             }
