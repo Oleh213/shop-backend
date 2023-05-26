@@ -144,7 +144,7 @@ namespace sushi_backend.BusinessLogic
 
             foreach (var timeline in curentTimeLines)
             {
-                if (newDate >= timeline.From && newDate <= timeline.To)
+                if (newDate.TimeOfDay >= timeline.From.TimeOfDay && newDate.TimeOfDay <= timeline.To.TimeOfDay)
                 {
                     if (timeline.Priority > highestPriority)
                     {
