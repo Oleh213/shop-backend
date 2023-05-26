@@ -79,9 +79,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 // add services
 builder.Services.AddScoped<IAdminActionsBL, AddAdminActionsBL>();
+builder.Services.AddScoped<ITimeLinesActionsBL, TimeLinesActionsBL>();
 builder.Services.AddScoped<ICategoryActionsBL, CategoryActionsBL>();
 builder.Services.AddScoped<IDiscountActionsBL, DiscountActionsBL>();
 builder.Services.AddScoped<ILoggerBL, LoggerBL>();

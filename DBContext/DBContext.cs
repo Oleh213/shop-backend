@@ -34,6 +34,8 @@ namespace WebShop.Main.DBContext
 
         public DbSet<MagazineSettings> magazineSettings { get; set; }
 
+        public DbSet<TimeLine> timeLines { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -84,6 +86,8 @@ namespace WebShop.Main.DBContext
             modelBuilder.Entity<ProductOption>().HasKey(s => new { s.ProductOptionsId });
 
             modelBuilder.Entity<MagazineSettings>().HasKey(s => new { s.MagazineSettingsId });
+
+            modelBuilder.Entity<TimeLine>().HasKey(s => new { s.TimeLineId });
         }
     }
 }

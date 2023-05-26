@@ -33,13 +33,16 @@ namespace WebShop.Main.BusinessLogic
 
         private IEmailSender _emailSenderBL;
 
+        private ITimeLinesActionsBL _timeLinesActionsBL;
+
         private readonly IHubContext<OrderHub> _hubContext;
 
-        public OrderActionsBL(ShopContext context, IHubContext<OrderHub> hubContext, IEmailSender emailSenderBL)
+        public OrderActionsBL(ShopContext context, IHubContext<OrderHub> hubContext, IEmailSender emailSenderBL, ITimeLinesActionsBL timeLinesActionsBL)
         {
             _context = context;
             _hubContext = hubContext;
             _emailSenderBL = emailSenderBL;
+            _timeLinesActionsBL = timeLinesActionsBL;
         }
 
         public async Task<User> GetUser(Guid userId)
@@ -49,112 +52,120 @@ namespace WebShop.Main.BusinessLogic
 
         public async Task<OrderResponsModel> CreateNewOrder(List<CartItemModel> cartItems, DeliveryOptionsModel deliveryOptions, PaymentMethod paymentMethod, ContactInfo contactInfo, PromoCodeOrderModel promocode)
         {
-            var orderId = Guid.NewGuid();
-
-            double totalPrice = GetTotalPrice(cartItems);
-
-            double discount =0;
-
-            if (deliveryOptions.DeliveryType == DeliveryType.PicUp)
+            if(await _timeLinesActionsBL.CheckShopWork())
             {
-                discount += totalPrice / 10;
-                totalPrice = totalPrice - totalPrice / 10;
-            }
+                var orderId = Guid.NewGuid();
 
-            if (promocode.PromoUsed)
-            {
-                var code = await _context.promocodes.FirstOrDefaultAsync(x => x.Code == promocode.UsedPromoCode);
+                double totalPrice = GetTotalPrice(cartItems);
 
-                discount += code.Discount;
+                double discount = 0;
 
-                totalPrice -= code.Discount;
-            }
-
-            var orderProduct = "";
-
-            TimeZoneInfo ukraineTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Kiev");
-
-            DateTime utcTime = DateTime.UtcNow;
-
-            DateTime newDate = TimeZoneInfo.ConvertTimeFromUtc(utcTime, ukraineTimeZone);
-
-            var deliveryOptionsNew = new DeliveryOptions
-            {
-                DeliveryOptionsId = Guid.NewGuid(),
-                Address = deliveryOptions.Address,
-                Latitude = deliveryOptions.Latitude,
-                Longitude = deliveryOptions.Longitude,
-                DeliveryTimeOptions = deliveryOptions.DeliveryTimeOptions,
-                DeliveryTime = deliveryOptions.DeliveryTime,
-                DeliveryType = deliveryOptions.DeliveryType,
-                OrderId = orderId,
-            };
-
-            var newOrder = new Order()
-            {
-                OrderId = orderId,
-                TotalPrice = totalPrice,
-                OrderTime = newDate,
-                Name = contactInfo.Name,
-                SurName = contactInfo.SurName,
-                PhoneNumber = contactInfo.PhoneNumber,
-                Email = contactInfo.Email,
-                PromoUsed = promocode.PromoUsed,
-                OrderNumber = _context.orders.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1,
-                UsedPromoCode = promocode.UsedPromoCode,
-                OrderStatus = OrderStatus.AwaitingPayment,
-                PaymentMethod = paymentMethod,
-                Discount = discount,
-                DeliveryOptions = deliveryOptionsNew,
-                OrderMessage = "",
-            };
-
-            var products = _context.products;
-
-            foreach (var item in cartItems)
-            {
-                var product = products.FirstOrDefault(x => x.ProductId == item.ProductId);
-
-                _context.orderLists.Add(new OrderList
+                if (deliveryOptions.DeliveryType == DeliveryType.PicUp)
                 {
-                    Product = product,
-                    Order = newOrder,
-                    Count = item.Count,
-                    Name = product.Name,
-                    Img = product.Image,
-                    Price = product.Price
-                });
-                orderProduct += $" {product.Name} x {item.Count} \n";
-            }
+                    discount += totalPrice / 10;
+                    totalPrice = totalPrice - totalPrice / 10;
+                }
 
-            _context.orders.Add(newOrder);
+                if (promocode.PromoUsed)
+                {
+                    var code = await _context.promocodes.FirstOrDefaultAsync(x => x.Code == promocode.UsedPromoCode);
 
-            if (paymentMethod == PaymentMethod.CardOnline)
-            {
+                    discount += code.Discount;
+
+                    totalPrice -= code.Discount;
+                }
+
+                var orderProduct = "";
+
+                TimeZoneInfo ukraineTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Kiev");
+
+                DateTime utcTime = DateTime.UtcNow;
+
+                DateTime newDate = TimeZoneInfo.ConvertTimeFromUtc(utcTime, ukraineTimeZone);
+
+                var deliveryOptionsNew = new DeliveryOptions
+                {
+                    DeliveryOptionsId = Guid.NewGuid(),
+                    Address = deliveryOptions.Address,
+                    Latitude = deliveryOptions.Latitude,
+                    Longitude = deliveryOptions.Longitude,
+                    DeliveryTimeOptions = deliveryOptions.DeliveryTimeOptions,
+                    DeliveryTime = deliveryOptions.DeliveryTime,
+                    DeliveryType = deliveryOptions.DeliveryType,
+                    OrderId = orderId,
+                };
+
+                var newOrder = new Order()
+                {
+                    OrderId = orderId,
+                    TotalPrice = totalPrice,
+                    OrderTime = newDate,
+                    Name = contactInfo.Name,
+                    SurName = contactInfo.SurName,
+                    PhoneNumber = contactInfo.PhoneNumber,
+                    Email = contactInfo.Email,
+                    PromoUsed = promocode.PromoUsed,
+                    OrderNumber = _context.orders.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1,
+                    UsedPromoCode = promocode.UsedPromoCode,
+                    OrderStatus = OrderStatus.AwaitingPayment,
+                    PaymentMethod = paymentMethod,
+                    Discount = discount,
+                    DeliveryOptions = deliveryOptionsNew,
+                    OrderMessage = "",
+                };
+
+                var products = _context.products;
+
+                foreach (var item in cartItems)
+                {
+                    var product = products.FirstOrDefault(x => x.ProductId == item.ProductId);
+
+                    _context.orderLists.Add(new OrderList
+                    {
+                        Product = product,
+                        Order = newOrder,
+                        Count = item.Count,
+                        Name = product.Name,
+                        Img = product.Image,
+                        Price = product.Price
+                    });
+                    orderProduct += $" {product.Name} x {item.Count} \n";
+                }
+
+                _context.orders.Add(newOrder);
+
+                if (paymentMethod == PaymentMethod.CardOnline)
+                {
+                    await _context.SaveChangesAsync();
+
+                    var respon = await GoToPayment(contactInfo.Email, totalPrice, orderId);
+
+                    return respon;
+                }
+                else
+                {
+                    newOrder.OrderStatus = OrderStatus.AwaitingConfirm;
+                }
+
                 await _context.SaveChangesAsync();
 
-                var respon = await GoToPayment(contactInfo.Email, totalPrice, orderId);
+                await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
 
-                return respon;
+                SentNotofication(newOrder, orderProduct);
+
+                var orderRespons = new OrderResponsModel
+                {
+                    Href = $"https://umamigroup.click/order-info/{newOrder.OrderId.ToString()}",
+                    OrderId = orderId
+                };
+
+                return orderRespons;
             }
             else
             {
-                newOrder.OrderStatus = OrderStatus.AwaitingConfirm;
+                return null;
             }
-
-            await _context.SaveChangesAsync();
-
-            await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
-
-            SentNotofication(newOrder, orderProduct);
-
-            var orderRespons = new OrderResponsModel
-            {
-                Href = $"https://umamigroup.click/order-info/{newOrder.OrderId.ToString()}",
-                OrderId = orderId
-            };
-
-            return orderRespons;
+            
         }
 
 
@@ -292,11 +303,13 @@ namespace WebShop.Main.BusinessLogic
                 ServerUrl = "https://web-shop.herokuapp.com/api/OrderController/PaymentStatus",
             };
 
+
             var liqPayClient = new LiqPayClient("sandbox_i35438868943", "sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz");
 
             var response = await liqPayClient.RequestAsync("request", invoiceRequest);
 
             var orderRespons = new OrderResponsModel { Href = response.Href, OrderId = orderId };
+
             return orderRespons;
         }
 
@@ -341,7 +354,6 @@ namespace WebShop.Main.BusinessLogic
             _context.SaveChanges();
 
             _hubContext.Clients.All.SendAsync("MakeOrder", order);
-
 
             return true;
 

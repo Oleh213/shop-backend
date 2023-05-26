@@ -15,7 +15,13 @@ namespace WebShop.Main.BusinessLogic
         }
         public void AddLog(LoggerLevel loggerLevel, string message)
         {
-            _context.loggers.Add(new Logger { LoggerId = Guid.NewGuid(), Message = message, LoggerLevel = loggerLevel, LogTime = DateTime.Now});
+            TimeZoneInfo ukraineTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Kiev");
+
+            DateTime utcTime = DateTime.UtcNow;
+
+            DateTime newDate = TimeZoneInfo.ConvertTimeFromUtc(utcTime, ukraineTimeZone);
+
+            _context.loggers.Add(new Logger { LoggerId = Guid.NewGuid(), Message = message, LoggerLevel = loggerLevel, LogTime = newDate});
 
             _context.SaveChanges();
         }

@@ -26,6 +26,8 @@ using LiqPay.SDK;
 using LiqPay.SDK.Dto.Enums;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using sushi_backend.Models;
+using MailKit.Search;
+using sushi_backend.Interfaces;
 
 namespace Shop.Main.Actions
 {
@@ -37,13 +39,16 @@ namespace Shop.Main.Actions
 
         private readonly ILoggerBL _loggerBL;
 
+        private readonly ITimeLinesActionsBL _timeLinesActionsBL;
+
         private readonly IHubContext<OrderHub> _hubContext;
 
-        public OrderController(IOrderActionsBL orderActionsBL, ILoggerBL loggerBL, IHubContext<OrderHub> hubContext)
+        public OrderController(IOrderActionsBL orderActionsBL, ILoggerBL loggerBL, IHubContext<OrderHub> hubContext, ITimeLinesActionsBL timeLinesActionsBL)
         {
             _orderActionsBL = orderActionsBL;
             _loggerBL = loggerBL;
             _hubContext = hubContext;
+            _timeLinesActionsBL = timeLinesActionsBL;
         }
 
         private Guid UserId => Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -53,29 +58,47 @@ namespace Shop.Main.Actions
         {
             try
             {
-                if (!_orderActionsBL.CheckCountOfProducts(orderModel.cartItems))
+                if(await _timeLinesActionsBL.CheckShopWork())
                 {
-                    var resError = new Response<string>()
+                    if (!_orderActionsBL.CheckCountOfProducts(orderModel.cartItems))
                     {
-                        IsError = true,
-                        ErrorMessage = "Error ",
-                        Data = $" Один із товарів у вашому кошику на даний сонент недоступний"
-                    };
+                        var resError = new Response<string>()
+                        {
+                            IsError = true,
+                            ErrorMessage = "Error ",
+                            Data = $" Один із товарів у вашому кошику на даний сонент недоступний"
+                        };
 
-                    return NotFound(resError);
+                        return NotFound(resError);
+                    }
+
+                    var respons = await _orderActionsBL.CreateNewOrder(orderModel.cartItems, orderModel.deliveryInfo, orderModel.paymentMethod, orderModel.contactInfo, orderModel.promoCode);
+
+                    if(respons != null)
+                    {
+                        var resOk = new Response<OrderResponsModel>()
+                        {
+                            IsError = false,
+                            ErrorMessage = "",
+                            Data = respons,
+                        };
+                        return Ok(resOk);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
                 }
-
-                var respons = await _orderActionsBL.CreateNewOrder(orderModel.cartItems, orderModel.deliveryInfo, orderModel.paymentMethod, orderModel.contactInfo, orderModel.promoCode);
-
-                var resOk = new Response<OrderResponsModel>()
+                var resError2 = new Response<string>()
                 {
-                    IsError = false,
-                    ErrorMessage = "",
-                    Data = respons,
+                    IsError = true,
+                    ErrorMessage = "Error ",
+                    Data = $" Вибачте але магазин зараз не працює"
                 };
 
+                return NotFound(resError2);
 
-                return Ok(resOk);
+
             }
             catch (Exception ex)
             {
@@ -85,23 +108,36 @@ namespace Shop.Main.Actions
             }
         }
 
-        //[Authorize]
-        //[HttpGet("ShowBuyList")]
-        //public async Task<IActionResult> ShowBuyList()
-        //{
-        //    try
-        //    {
-        //        var orderedProductIds = await _orderActionsBL.ShowOrders(UserId);
+        [HttpGet("ShowBuyList")]
+        public async Task<IActionResult> ShowBuyList(Guid orderId)
+        {
+            try
+            {
+                var invoiceRequest = new LiqPayRequest
+                {
+                    OrderId = orderId.ToString(),
+                    Action = LiqPayRequestAction.Status,
+                    Language = LiqPayRequestLanguage.UK,
+                };
 
-        //        return Ok(orderedProductIds);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
 
-        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        //    }
-        //}
+                var liqPayClient = new LiqPayClient("sandbox_i35438868943", "sandbox_hk7Vbmn1Li9UOa3P13ZYyOZSnac8JlzWa96IJYZz");
+
+                var response = await liqPayClient.RequestAsync("request", invoiceRequest);
+
+                var orderRespons = new OrderResponsModel { Href = response.Href, OrderId = orderId };
+
+
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         [HttpPatch("GetTotalPrice")]
         public async Task<IActionResult> GetTotalPrice(List<CartItemModel> cartItems)
@@ -146,17 +182,24 @@ namespace Shop.Main.Actions
                     {
                         var order = await _orderActionsBL.GetOrder(model.OrderId);
 
+
                         if (order.OrderStatus != OrderStatus.AwaitingConfirm && model.orderStatus == OrderStatus.Canceled)
                         {
+
                             _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted changed order status Order:'{order.OrderId}'(From:{model.orderStatus} to:'{order.OrderStatus}')");
-                            return NotFound();
+                            return Unauthorized();
                         }
                         if (order != null)
                         {
+                            var orderStaus = order.OrderStatus;
                             await _orderActionsBL.ChangeOrderStatus(order, model.orderStatus);
 
-                            _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' changed order status Order:'{order.OrderId}'(From:{model.orderStatus} to:'{order.OrderStatus}')");
+                            _loggerBL.AddLog(LoggerLevel.Info, $"User:'{UserId}' changed order status Order:'{order.OrderId}'(From:{orderStaus} to:'{order.OrderStatus}')");
                             return Ok();
+                        }
+                        else
+                        {
+                            return NotFound();
                         }
                     }
                     else
