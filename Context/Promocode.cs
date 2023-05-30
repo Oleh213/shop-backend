@@ -13,5 +13,6 @@ namespace WebShop.Main.Conext
         
         public string Code { get; set; }
 
+        public int Count { get; set; }
     }
 }

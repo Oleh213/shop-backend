@@ -87,6 +87,9 @@ namespace sushi_backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
                     b.Property<int>("Discount")
                         .HasColumnType("int");
 
@@ -254,6 +257,9 @@ namespace sushi_backend.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ImageNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("ImagesSliderId");
 

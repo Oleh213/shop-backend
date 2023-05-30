@@ -40,9 +40,11 @@
   <ItemGroup>
     <None Remove="Controllers\" />
     <None Remove="Context\" />
+    <None Remove="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Context\" />
+    <Folder Include="Images\" />
   </ItemGroup>
 </Project>

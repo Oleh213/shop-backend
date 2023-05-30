@@ -1,66 +1,67 @@
 ﻿<Properties StartupConfiguration="{33BB7169-9433-49F9-92C5-B6A6E56A9453}|gdfg">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.sushi-backend PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/Controllers/OrderController.cs" relfile="Controllers/OrderController.cs" line="271" column="1" />
-      <Breakpoint file="/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/BusinessLogic/OrderActionsBL.cs" relfile="BusinessLogic/OrderActionsBL.cs" line="162" column="1" />
-      <Breakpoint file="/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/BusinessLogic/OrderActionsBL.cs" relfile="BusinessLogic/OrderActionsBL.cs" line="306" column="1" />
-    </BreakpointStore>
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="BusinessLogic/OrderActionsBL.cs">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/ImagesSliderController.cs">
     <Files>
-      <File FileName="BusinessLogic/OrderActionsBL.cs" Line="300" Column="47" />
-      <File FileName="Controllers/UserActions.cs" Line="13" Column="31" />
-      <File FileName="Controllers/OrderActions.cs" Line="107" Column="1" />
+      <File FileName="BusinessLogic/OrderActionsBL.cs" Line="301" Column="31" />
       <File FileName="Context/DeliveryOptions.cs" />
       <File FileName="Context/Order.cs" />
       <File FileName="Models/DeliveryOptionsModel.cs" />
-      <File FileName="BusinessLogic/ProductActionsBL.cs" Line="34" Column="8" />
+      <File FileName="BusinessLogic/ProductActionsBL.cs" Line="38" Column="9" />
       <File FileName="Interfaces/IOrderActionsBL.cs" />
       <File FileName="AuthOptions.cs" />
       <File FileName="appsettings.Development.json" />
-      <File FileName="Program.cs" Line="131" Column="34" />
+      <File FileName="Program.cs" />
       <File FileName="Models/OrderModel.cs" />
       <File FileName="BusinessLogic/LoggerBL.cs" />
       <File FileName="DBContext/DBContext.cs" />
-      <File FileName="BusinessLogic/LogInActionsBL.cs" Line="1" Column="1" />
-      <File FileName="Controllers/LoginActions.cs" Line="22" Column="32" />
+      <File FileName="BusinessLogic/LogInActionsBL.cs" />
       <File FileName="Context/OrderList.cs" />
       <File FileName="Hubs/OrderHub.cs" />
       <File FileName="Context/Product.cs" />
-      <File FileName="Context/Category.cs" Line="1" Column="1" />
+      <File FileName="Context/Category.cs" />
       <File FileName="Context/ProductOption.cs" />
-      <File FileName="Controllers/ProductActions.cs" Line="193" Column="1" />
       <File FileName="Context/User.cs" />
-      <File FileName="Interfaces/IProductActionsBL.cs" />
-      <File FileName="BusinessLogic/PromocodeActionsBL.cs" Line="10" Column="6" />
+      <File FileName="Interfaces/IProductActionsBL.cs" Line="34" Column="20" />
+      <File FileName="BusinessLogic/PromocodeActionsBL.cs" />
       <File FileName="DTO/ProductDTO.cs" />
       <File FileName="Context/MagazineSettings.cs" />
-      <File FileName="Models/OrderResponsModel.cs" Line="4" Column="15" />
+      <File FileName="Models/OrderResponsModel.cs" />
       <File FileName="Models/OrderIdModel.cs" />
       <File FileName="Models/CartItemModel.cs" />
       <File FileName="BusinessLogic/CategoryActionsBL.cs" />
       <File FileName="DTO/UserDTO.cs" />
       <File FileName="appsettings.json" />
       <File FileName="Models/UploudFileModel.cs" />
-      <File FileName="Models/EditProductModel.cs" />
-      <File FileName="Models/ProductModel.cs" Line="22" Column="23" />
+      <File FileName="Models/EditProductModel.cs" Line="25" Column="1" />
+      <File FileName="Models/ProductModel.cs" />
       <File FileName="BusinessLogic/DiscountActionsBL.cs" />
-      <File FileName="Context/ImagesSlider.cs" />
-      <File FileName="Controllers/DiscountActions.cs" Line="16" Column="35" />
+      <File FileName="Context/ImagesSlider.cs" Line="11" Column="1" />
       <File FileName="Interfaces/IDiscountActionsBL.cs" />
-      <File FileName="Models/AddProductDiscountModel.cs" />
-      <File FileName="Controllers/RegistController.cs" Line="20" Column="33" />
-      <File FileName="Controllers/PromocodeController.cs" Line="17" Column="36" />
-      <File FileName="Controllers/ImagesSliderController.cs" Line="14" Column="39" />
-      <File FileName="Controllers/AdminController.cs" Line="20" Column="35" />
-      <File FileName="Controllers/CategoryController.cs" Line="22" Column="35" />
-      <File FileName="BusinessLogic/CartItemActionsBL.cs" Line="24" Column="1" />
-      <File FileName="Context/CartItemActions.cs" Line="47" Column="65" />
-      <File FileName="Interfaces/IPromocodeActionsBL.cs" Line="7" Column="26" />
-      <File FileName="Interfaces/ICartItemActionsBl.cs" Line="11" Column="27" />
+      <File FileName="Models/AddProductDiscountModel.cs" Line="1" Column="1" />
+      <File FileName="Controllers/RegistController.cs" />
+      <File FileName="Controllers/PromocodeController.cs" />
+      <File FileName="Controllers/ImagesSliderController.cs" Line="53" Column="9" />
+      <File FileName="Controllers/AdminController.cs" />
+      <File FileName="Controllers/CategoryController.cs" />
+      <File FileName="BusinessLogic/CartItemActionsBL.cs" />
+      <File FileName="Interfaces/IPromocodeActionsBL.cs" />
+      <File FileName="Interfaces/ICartItemActionsBl.cs" />
+      <File FileName="BusinessLogic/TimiLinesActionsBL.cs" Line="175" Column="1" />
+      <File FileName="BusinessLogic/ImageSliderActionsBL.cs" Line="80" Column="1" />
+      <File FileName="Interfaces/ITimeLinesActionsBL.cs" Line="22" Column="40" />
+      <File FileName="Controllers/TimeLineController.cs" Line="128" Column="16" />
+      <File FileName="Models/AddNewTimeLineModel.cs" />
+      <File FileName="Controllers/OrderController.cs" />
+      <File FileName="Context/Promocode.cs" Line="16" Column="37" />
+      <File FileName="Controllers/ProductController.cs" Line="128" Column="1" />
+      <File FileName="Controllers/LoginController.cs" />
+      <File FileName="Models/ChangeOrderStatusModel.cs" />
+      <File FileName="Interfaces/ILoggerBL.cs" />
+      <File FileName="Controllers/UserController.cs" Line="147" Column="14" />
+      <File FileName="BusinessLogic/EmailSenderBL.cs" Line="18" Column="1" />
+      <File FileName="DTO/ImagesSliderDTO.cs" Line="9" Column="1" />
+      <File FileName="Models/EditSlideModel.cs" Line="6" Column="14" />
+      <File FileName="Interfaces/IImageSliderActionsBL.cs" Line="16" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -68,13 +69,14 @@
           <Node name="sushi-backend" expanded="True">
             <Node name="sushi-backend" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="BusinessLogic" expanded="True">
-                <Node name="OrderActionsBL.cs" selected="True" />
+              <Node name="BusinessLogic" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="ImagesSliderController.cs" selected="True" />
               </Node>
-              <Node name="Controllers" expanded="True" />
               <Node name="DBContext" expanded="True" />
               <Node name="DTO" expanded="True" />
               <Node name="Interfaces" expanded="True" />
+              <Node name="Migrations" expanded="True" />
               <Node name="Models" expanded="True" />
               <Node name="Properties" expanded="True" />
               <Node name="appsettings.json" expanded="True" />
@@ -84,5 +86,12 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.sushi-backend PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/BusinessLogic/OrderActionsBL.cs" relfile="BusinessLogic/OrderActionsBL.cs" line="303" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

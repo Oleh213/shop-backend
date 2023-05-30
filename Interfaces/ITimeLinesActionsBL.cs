@@ -19,6 +19,8 @@ namespace sushi_backend.Interfaces
 
         Task<bool> CloseShopTillToday();
 
+        Task<bool> OpenShopTillToday();
+
         Task<bool> DeleteTimeLine(Guid timeLineId);
     }
 }

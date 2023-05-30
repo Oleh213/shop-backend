@@ -30,5 +30,7 @@ namespace WebShop.Main.Interfaces
         Task<List<ProductOptionDTO>> ProductOptionsDTO();
 
         Task<bool> UploadImage(IFormFile file, string imageName);
+
+        Task<bool> DeleteImage(string imageName);
     }
 }

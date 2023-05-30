@@ -8,6 +8,8 @@ namespace sushi_backend.Context
 		public string Image { get; set; }
 
 		public string Description { get; set; }
+
+		public int ImageNumber { get; set; }
     }
 }
 

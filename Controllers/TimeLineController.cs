@@ -43,14 +43,7 @@ namespace sushi_backend.Controllers
                     {
                         var check = await _timeLinesActionsBL.AddTimeLine(model.From, model.To, model.TimeConfig, model.IsOpen, model.Note, model.Priority);
 
-                        if (check)
-                        {
-                            return Ok();
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
+                        return check ? Ok() : NotFound();
                     }
                     else
                     {
@@ -89,14 +82,7 @@ namespace sushi_backend.Controllers
                     {
                         var check = await _timeLinesActionsBL.CloseShopTillToday();
 
-                        if (check)
-                        {
-                            return Ok();
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
+                        return check ? Ok() : NotFound();
                     }
                     else
                     {
@@ -120,6 +106,46 @@ namespace sushi_backend.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost("OpenShopTillToday")]
+        [Authorize]
+        public async Task<IActionResult> OpenShopTillToday()
+        {
+            try
+            {
+                var user = await _timeLinesActionsBL.GetUser(UserId);
+
+                if (user != null)
+                {
+                    if (user.Role == UserRole.Admin)
+                    {
+                        var check = await _timeLinesActionsBL.OpenShopTillToday();
+
+                        return check ? Ok() : NotFound();
+                    }
+                    else
+                    {
+                        var resEr = new Response<string>()
+                        {
+                            IsError = true,
+                            ErrorMessage = "401",
+                            Data = $"* Error, you dont have permissions! *"
+                        };
+
+                        _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted add new Product (Permission denied)");
+                        return Unauthorized(resEr);
+                    }
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPatch("EditTimeLine")]
         [Authorize]
         public async Task<IActionResult> EditTimeLine([FromBody] EditTimeLineModel model)
@@ -134,15 +160,7 @@ namespace sushi_backend.Controllers
                     {
                         var check = await _timeLinesActionsBL.EditTimeLine(model);
 
-                        if (check)
-                        {
-                            return Ok();
-                        }
-                        else
-                        {
-                            return NotFound();
-                        }
-
+                        return check ? Ok() : NotFound();
                     }
                     else
                     {

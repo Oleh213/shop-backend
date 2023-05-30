@@ -46,9 +46,8 @@ namespace WebShop.Main.BusinessLogic
         }
 
         public async Task<User> GetUser(Guid userId)
-        {
-            return await _context.users.FirstOrDefaultAsync(x => x.UserId == userId);
-        }
+            => await _context.users.FirstOrDefaultAsync(x => x.UserId == userId);
+        
 
         public async Task<OrderResponsModel> CreateNewOrder(List<CartItemModel> cartItems, DeliveryOptionsModel deliveryOptions, PaymentMethod paymentMethod, ContactInfo contactInfo, PromoCodeOrderModel promocode)
         {
@@ -142,10 +141,8 @@ namespace WebShop.Main.BusinessLogic
 
                     return respon;
                 }
-                else
-                {
-                    newOrder.OrderStatus = OrderStatus.AwaitingConfirm;
-                }
+
+                newOrder.OrderStatus = OrderStatus.AwaitingConfirm;
 
                 await _context.SaveChangesAsync();
 
@@ -161,11 +158,7 @@ namespace WebShop.Main.BusinessLogic
 
                 return orderRespons;
             }
-            else
-            {
-                return null;
-            }
-            
+            return null;
         }
 
 
@@ -194,8 +187,8 @@ namespace WebShop.Main.BusinessLogic
             return sb.ToString();
         }
 
-        public async Task<Order> GetOrder(Guid orderId) =>
-            await _context.orders.Where(x => x.OrderId == orderId).Include(x => x.DeliveryOptions).FirstOrDefaultAsync();
+        public async Task<Order> GetOrder(Guid orderId)
+            => await _context.orders.Where(x => x.OrderId == orderId).Include(x => x.DeliveryOptions).FirstOrDefaultAsync();
         
         public bool CheckCountOfProducts(List<CartItemModel> cartItems)
         {
@@ -257,37 +250,34 @@ namespace WebShop.Main.BusinessLogic
 
         public int GetTotalPrice(List<CartItemModel> cart)
         {
-            if (cart != null)
+            if (cart == null)
             {
-                int totalPrice = 0;
-
-                var products = _context.products;
-
-                foreach (var item in cart)
-                {
-                    totalPrice += products.FirstOrDefault(x => x.ProductId == item.ProductId).Price * item.Count;
-                }
-
-                return totalPrice;
+                return 0;
             }
-            return 0;
+            var products = _context.products;
+
+            var totalPrice = cart.Sum(item => products.FirstOrDefault(x => x.ProductId == item.ProductId)?.Price * item.Count) ?? 0;
+
+            return totalPrice;
+
+
         }
 
-        public static decimal CalculateDiscountedPrice(List<Product> products)
-        {
-            decimal totalPrice = products.Sum(p => p.Price); // Обчислюємо загальну ціну замовлення
-            int pizzaCount = products.Count(p => p.Category.CategoryName == "Сети"); // Обчислюємо кількість піц в замовленні
-            if (pizzaCount >= 3) // Якщо в замовленні є достатня кількість піц для знижки
-            {
-                decimal cheapestPizzaPrice = products.Where(p => p.Category.CategoryName == "Pizza").Min(p => p.Price); // Обчислюємо ціну найдешевшої піци
-                decimal discount = (pizzaCount / 3) * cheapestPizzaPrice; // Знижка дорівнює ціні найдешевшої піци, помноженій на кількість разів, які можна застосувати знижку
-                return totalPrice - discount; // Повертаємо нову ціну замовлення з урахуванням знижки
-            }
-            else // Якщо в замовленні менше піц, ніж потрібно для знижки
-            {
-                return totalPrice; // Повертаємо загальну ціну замовлення без знижки
-            }
-        }
+        //public static decimal CalculateDiscountedPrice(List<Product> products)
+        //{
+        //    decimal totalPrice = products.Sum(p => p.Price); // Обчислюємо загальну ціну замовлення
+        //    int pizzaCount = products.Count(p => p.Category.CategoryName == "Сети"); // Обчислюємо кількість піц в замовленні
+        //    if (pizzaCount >= 3) // Якщо в замовленні є достатня кількість піц для знижки
+        //    {
+        //        decimal cheapestPizzaPrice = products.Where(p => p.Category.CategoryName == "Pizza").Min(p => p.Price); // Обчислюємо ціну найдешевшої піци
+        //        decimal discount = (pizzaCount / 3) * cheapestPizzaPrice; // Знижка дорівнює ціні найдешевшої піци, помноженій на кількість разів, які можна застосувати знижку
+        //        return totalPrice - discount; // Повертаємо нову ціну замовлення з урахуванням знижки
+        //    }
+        //    else // Якщо в замовленні менше піц, ніж потрібно для знижки
+        //    {
+        //        return totalPrice; // Повертаємо загальну ціну замовлення без знижки
+        //    }
+        //}
 
         public async Task<OrderResponsModel> GoToPayment(string email, double amount, Guid orderId)
         {

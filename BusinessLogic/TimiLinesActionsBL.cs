@@ -109,14 +109,48 @@ namespace sushi_backend.BusinessLogic
                 To = newDate.AddHours(23 - newDate.Hour),
                 TimeConfig = TimeConfig.Once,
                 IsOpen = false,
-                Note = "Негайне закритя",
+                Note = "CLOSE",
                 Priority = curentTimeLines.Max(x=>x.Priority) +1,
             });
 
             await _context.SaveChangesAsync();
 
             return true;
+        }
 
+        public async Task<bool> OpenShopTillToday()
+        {
+            TimeZoneInfo ukraineTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Kiev");
+
+            DateTime utcTime = DateTime.UtcNow;
+
+            DateTime newDate = TimeZoneInfo.ConvertTimeFromUtc(utcTime, ukraineTimeZone);
+
+            var timeLines = await _context.timeLines.ToListAsync();
+
+            var curentTimeLines = new List<TimeLine>();
+
+            foreach (var item in timeLines)
+            {
+                if (item.To.Day == newDate.Day || item.From.Day == newDate.Day || (item.TimeConfig == TimeConfig.Repeat && item.From.DayOfWeek == newDate.DayOfWeek || item.TimeConfig == TimeConfig.Repeat && item.To.DayOfWeek == newDate.DayOfWeek))
+                {
+                    curentTimeLines.Add(item);
+                }
+            }
+
+            _context.timeLines.Add(new TimeLine()
+            {
+                From = newDate,
+                To = newDate.AddHours(23 - newDate.Hour),
+                TimeConfig = TimeConfig.Once,
+                IsOpen = true,
+                Note = "OPEN",
+                Priority = curentTimeLines.Max(x => x.Priority) + 1,
+            });
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
         public async Task<bool> CheckShopWork()
         {

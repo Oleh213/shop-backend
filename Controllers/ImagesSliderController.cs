@@ -7,6 +7,8 @@ using WebShop.Main.Interfaces;
 using WebShop.Models;
 using Microsoft.AspNet.SignalR;
 using sushi_backend.Interfaces;
+using WebShop.Main.BusinessLogic;
+using sushi_backend.Models;
 
 namespace sushi_backend.Controllers
 {
@@ -35,12 +37,7 @@ namespace sushi_backend.Controllers
             {
                 var images = await _imageSliderActionsBL.GetImages();
 
-                if (images != null)
-                {
-                    return Ok(images);
-                }
-                else
-                    return NotFound();
+                return images != null ? Ok(images) : NotFound();
             }
             catch (Exception ex)
             {
@@ -49,6 +46,88 @@ namespace sushi_backend.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-	}
+
+        [HttpPatch("UpdateImageSlider")]
+        [Authorize]
+        public async Task<IActionResult> UpdateImageSlider([FromForm] EditSlideModel model)
+        {
+            try
+            {
+                var user = await _imageSliderActionsBL.GetUser(UserId);
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+                if (user.Role == UserRole.Admin)
+                {
+                    var response = await _imageSliderActionsBL.ChangeImage(model);
+                    return response ? Ok() : NotFound();
+                }
+
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete("DeleteImageSlide")]
+        [Authorize]
+        public async Task<IActionResult> DeleteImageSlide([FromQuery] EditSlideModel model)
+        {
+            try
+            {
+
+                var user = await _imageSliderActionsBL.GetUser(UserId);
+
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+                if (user.Role == UserRole.Admin)
+                {
+                    var response = await _imageSliderActionsBL.DeleteImage(model);
+                    return response ? Ok() : NotFound();
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost("AddNewSlide")]
+        [Authorize]
+        public async Task<IActionResult> AddNewSlide([FromForm] EditSlideModel model)
+        {
+            try
+            {
+                var user = await _imageSliderActionsBL.GetUser(UserId);
+
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+                if (user.Role == UserRole.Admin)
+                {
+                    var response = await _imageSliderActionsBL.AddNewSlide(model);
+                    return response ? Ok() : NotFound();
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+    }
 }
 
