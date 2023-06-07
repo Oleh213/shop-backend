@@ -207,7 +207,6 @@ namespace Shop.Main.Actions
                         _loggerBL.AddLog(LoggerLevel.Warn, $"User:'{UserId}' wanted changed order status(Permission denied)");
                         return NotFound();
                     }
-                    return NotFound();
                 }
                 else return NotFound();
             }
@@ -260,11 +259,8 @@ namespace Shop.Main.Actions
             {
                 var order = await _orderActionsBL.GetOrderById(orderId);
 
-                if (order != null)
-                {
-                    return Ok(order);
-                }
-                else return NotFound();
+                return (order != null) ? Ok(order) : NotFound();
+
             }
             catch (Exception ex)
             {
@@ -300,14 +296,8 @@ namespace Shop.Main.Actions
         {
             try
             {
-                if(_orderActionsBL.ConfirmPayment(data, signature))
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return NotFound();
-                }
+                return (_orderActionsBL.ConfirmPayment(data, signature)) ? Ok() : NotFound();
+
             }
             catch (Exception ex)
             {

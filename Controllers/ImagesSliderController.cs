@@ -5,7 +5,7 @@ using WebShop.Main.Conext;
 using WebShop.Main.Context;
 using WebShop.Main.Interfaces;
 using WebShop.Models;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.Authorization;
 using sushi_backend.Interfaces;
 using WebShop.Main.BusinessLogic;
 using sushi_backend.Models;

@@ -69,6 +69,10 @@ namespace WebShop.Main.BusinessLogic
                 {
                     var code = await _context.promocodes.FirstOrDefaultAsync(x => x.Code == promocode.UsedPromoCode);
 
+                    code.Count--;
+
+                    await _context.SaveChangesAsync();
+
                     discount += code.Discount;
 
                     totalPrice -= code.Discount;
@@ -299,6 +303,7 @@ namespace WebShop.Main.BusinessLogic
             var response = await liqPayClient.RequestAsync("request", invoiceRequest);
 
             var orderRespons = new OrderResponsModel { Href = response.Href, OrderId = orderId };
+
 
             return orderRespons;
         }

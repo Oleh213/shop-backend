@@ -43,7 +43,6 @@ namespace Shop.Main.Actions
         {
             try
             {
-
                 return Ok();
             }
             catch (Exception ex)

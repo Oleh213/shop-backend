@@ -82,6 +82,18 @@ namespace WebShop.Main.BusinessLogic
 
             await DeleteImage(product.Image);
 
+            var option = await _context.productOptions.FirstOrDefaultAsync(x => x.Name == model.ProductOptionName);
+
+            if (option != null)
+            {
+                product.ProductOptionsId = option.ProductOptionsId;
+                product.ProductOption = option;
+            }
+            else
+            {
+                product.ProductOption = option;
+                product.ProductOptionsId = null;
+            }
             product.Name = model.ProductName;
             product.Available = model.Available;
             product.CategoryId = category.CategoryId;

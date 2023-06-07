@@ -19,14 +19,13 @@ namespace WebShop.Main.BusinessLogic
         }
 
         public async Task<bool> CheckName(string name)
-        {
-            return await _context.users.AnyAsync(x => x.Name == name);
-        }
+            =>  await _context.users.AnyAsync(x => x.Name == name);
 
         public async Task<bool> CheckEmail(string email)
-        {
-            return await _context.users.AnyAsync(x => x.Email == email);
-        }
+            => await _context.users.AnyAsync(x => x.Email == email);
+
+        public async Task<User> GetUser(Guid userId)
+            => await _context.users.FirstOrDefaultAsync(x => x.UserId == userId);
 
         public async Task<string> Regist(string name, string email, string password)
         {

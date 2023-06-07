@@ -136,7 +136,6 @@
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Microsoft.IdentityModel.LoggingExtensions.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Microsoft.IdentityModel.Validators.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/MimeKit.dll
-/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/BouncyCastle.Crypto.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/System.Security.Cryptography.Xml.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Telegram.Bot.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/LiqPay.SDK.dll
@@ -166,3 +165,5 @@
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/AWSSDK.Core.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/AWSSDK.S3.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/AWSSDK.Extensions.NETCore.Setup.dll
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/BouncyCastle.Cryptography.dll
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Microsoft.Identity.Web.UI.Views.dll

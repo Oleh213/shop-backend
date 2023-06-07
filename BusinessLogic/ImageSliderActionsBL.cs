@@ -46,6 +46,8 @@ namespace sushi_backend.BusinessLogic
                 }) ;
 
                 await _context.SaveChangesAsync();
+
+                return true;
             }
             return false;
         }

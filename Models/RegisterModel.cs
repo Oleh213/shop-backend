@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using WebShop.Main.Conext;
 
 namespace WebShop.Models
 {
@@ -11,6 +12,9 @@ namespace WebShop.Models
 		public string Password { get; set; }
 
 		public string Email { get; set; }
-	}
+
+        public UserRole UserRole { get; set; }
+
+    }
 }
 

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
+using Telegram.Bot.Types;
 using WebShop.Main.BusinessLogic;
 using WebShop.Main.Conext;
 using WebShop.Main.Context;
@@ -29,12 +32,21 @@ namespace Shop.Main.Actions
             _registActionsBL = registActionsBL;
             _loggerBL = loggerBL;
         }
+        private Guid UserId => Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
+        [Authorize]
         [HttpPost("Registration")]
         public async Task<IActionResult> Registration([FromBody] RegisterModel model)
         {
-            try {
-                if (await _registActionsBL.CheckName(model.Name))
+            try
+            {
+                var user = await _registActionsBL.GetUser(UserId);
+
+                if (user == null || user.Role != UserRole.Admin)
+                {
+                    return Unauthorized();
+                }
+                else if (await _registActionsBL.CheckName(model.Name))
                 {
                     var resEr = new Response<string>()
                     {
