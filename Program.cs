@@ -94,8 +94,6 @@ builder.Services.AddScoped<IProductActionsBL, ProductActionsBL>();
 builder.Services.AddScoped<IPromoCodeActionsBL, PromoCodeActionsBL>();
 builder.Services.AddScoped<IRegistActionsBL, RegistActionsBL>();
 builder.Services.AddScoped<IUserActionsBL, UserActionsBL>();
-
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
