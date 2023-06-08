@@ -30,7 +30,6 @@ namespace sushi_backend.Controllers
         private Guid UserId => Guid.Parse(User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
         [HttpGet("GetImagesSlider")]
-        [Authorize]
         public async Task<IActionResult> GetImagesSlider()
         {
             try

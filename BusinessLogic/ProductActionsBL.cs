@@ -194,6 +194,8 @@ namespace WebShop.Main.BusinessLogic
 
         public ProductDTO OneProductsDTO(Product product)
         {
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+
             var productDTO = new ProductDTO
             {
                 ProductId = product.ProductId,
@@ -201,11 +203,14 @@ namespace WebShop.Main.BusinessLogic
                 CategoryName = product.Category.CategoryName,
                 CategoryId = product.CategoryId,
                 ProductName = product.Name,
+                Weight = product.Weight,
+                ProductOption = product.ProductOption,
                 Available = product.Available,
                 Discount = product.Discount,
                 Description = product.Description,
-                Image = product.Image,
+                Image = imageSource + product.Image,
             };
+
             return productDTO;
         }
 
