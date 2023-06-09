@@ -36,7 +36,7 @@ namespace WebShop.Main.BusinessLogic
                     var item = product.FirstOrDefault(x=> x.ProductId == cartItem.ProductId);
                     newCartOfUsers.Add(new CartItemDTO
                     {
-                        ProductName = item.Name,
+                        ProductName = item.ProductName,
                         ProductId = item.ProductId,
                         Image = imageSource + item.Image,
                         Price = item.Price,

@@ -128,11 +128,11 @@ namespace WebShop.Main.BusinessLogic
                         Product = product,
                         Order = newOrder,
                         Count = item.Count,
-                        Name = product.Name,
+                        Name = product.ProductName,
                         Img = product.Image,
                         Price = product.Price
                     });
-                    orderProduct += $" {product.Name} x {item.Count} \n";
+                    orderProduct += $" {product.ProductName} x {item.Count} \n";
                 }
 
                 _context.orders.Add(newOrder);
@@ -339,7 +339,7 @@ namespace WebShop.Main.BusinessLogic
             {
                 var product = products.FirstOrDefault(x => x.ProductId == item.ProductId);
                
-                orderProduct += $" {product.Name} x {item.Count} \n";
+                orderProduct += $" {product.ProductName} x {item.Count} \n";
             }
 
             SentNotofication(order, orderProduct);

@@ -57,7 +57,7 @@ namespace WebShop.Main.BusinessLogic
 
             _context.products.Add(new Product()
             {
-                Name = model.ProductName,
+                ProductName = model.ProductName,
                 Available = model.Available,
                 Price = model.Price,
                 ProductId = id,
@@ -95,7 +95,7 @@ namespace WebShop.Main.BusinessLogic
                 product.ProductOption = option;
                 product.ProductOptionsId = null;
             }
-            product.Name = model.ProductName;
+            product.ProductName = model.ProductName;
             product.Available = model.Available;
             product.CategoryId = category.CategoryId;
             product.Description = model.Description;
@@ -176,7 +176,7 @@ namespace WebShop.Main.BusinessLogic
                     Price = item.Price,
                     CategoryName = item.Category.CategoryName,
                     CategoryId = item.CategoryId,
-                    ProductName = item.Name,
+                    ProductName = item.ProductName,
                     Available = item.Available,
                     Discount = item.Discount,
                     Description = item.Description,
@@ -205,7 +205,7 @@ namespace WebShop.Main.BusinessLogic
                 Price = product.Price,
                 CategoryName = product.Category.CategoryName,
                 CategoryId = product.CategoryId,
-                ProductName = product.Name,
+                ProductName = product.ProductName,
                 Weight = product.Weight,
                 ProductOption = product.ProductOption,
                 Available = product.Available,
@@ -254,6 +254,54 @@ namespace WebShop.Main.BusinessLogic
                 }
             }
             return itemsProducts;
+        }
+        public async Task<bool> AddItemToProduct(Guid itemId, Guid productId)
+        {
+            var product = await _context.products.FirstOrDefaultAsync(x=> x.ProductId == productId);
+
+            if(product.Items == null)
+            {
+                product.Items = itemId.ToString();
+            }
+            else
+            {
+                product.Items += " | " + itemId.ToString();
+            }
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DellItemToProduct(Guid itemId, Guid productId)
+        {
+            var product = await _context.products.FirstOrDefaultAsync(x => x.ProductId == productId);
+
+            if (product.Items != null)
+            {
+                var guidArray = product.Items.Split('|', StringSplitOptions.RemoveEmptyEntries);
+
+                var itemsList = new List<Guid>();
+
+                foreach (string guid in guidArray)
+                {
+                    if (Guid.TryParse(guid.Trim(), out Guid parsedGuid))
+                    {
+                        itemsList.Add(parsedGuid);
+                    }
+                }
+                if (itemsList.Any(x => x == itemId))
+                {
+                    itemsList.Remove(itemId);
+
+                    product.Items = string.Join("|", itemsList);
+
+                    await _context.SaveChangesAsync();
+
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
     }
 }

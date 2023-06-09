@@ -34,5 +34,9 @@ namespace WebShop.Main.Interfaces
         Task<bool> DeleteImage(string imageName);
 
         Task<List<Product>> GetProductItems(string items);
+
+        Task<bool> DellItemToProduct(Guid itemId, Guid productId);
+
+        Task<bool> AddItemToProduct(Guid itemId, Guid productId);
     }
 }

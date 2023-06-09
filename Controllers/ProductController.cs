@@ -243,6 +243,62 @@ namespace Shop.Main.Actions
             }
         }
 
+        [Authorize]
+        [HttpPost("AddItemToProduct")]
+        public async Task<IActionResult> AddItemToProduct([FromBody] EditProductItemModel model)
+        {
+            try
+            {
+                var user = await _productActionsBL.GetUser(UserId);
+
+                if (user != null)
+                {
+                    if (user.Role == UserRole.Admin)
+                    {
+                        var result = await _productActionsBL.AddItemToProduct(model.ItemId,model.ProductId);
+
+                        return result ? Ok() : NotFound();
+                    }
+                    return Unauthorized();
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("DellItemFromProduct")]
+        public async Task<IActionResult> DellItemFromProduct([FromBody] EditProductItemModel model)
+        {
+            try
+            {
+                var user = await _productActionsBL.GetUser(UserId);
+
+                if (user != null)
+                {
+                    if (user.Role == UserRole.Admin)
+                    {
+                        var result = await _productActionsBL.DellItemToProduct(model.ItemId, model.ProductId);
+
+                        return result ? Ok() : NotFound();
+                    }
+                    return Unauthorized();
+                }
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFileAsync([FromForm] UploudFileModel uploudFileModel)
         {
