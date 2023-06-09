@@ -29,6 +29,8 @@ namespace WebShop.Main.DTO
         public string? Image { get; set; }
 
         public ProductOption? ProductOption { get; set; }
+
+        public List<Product>? Items { get; set; }
     }
 }
 

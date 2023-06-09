@@ -25,12 +25,14 @@ namespace WebShop.Main.Interfaces
 
         Task<Product> GetOneProductWithAll(Guid productId);
 
-        ProductDTO OneProductsDTO(Product product);
+        Task<ProductDTO> OneProductsDTO(Product product);
 
         Task<List<ProductOptionDTO>> ProductOptionsDTO();
 
-        Task<bool> UploadImage(IFormFile file, string imageName);
+        Task<bool> UploadImage(IFormFile file, string imageName, string folderName);
 
         Task<bool> DeleteImage(string imageName);
+
+        Task<List<Product>> GetProductItems(string items);
     }
 }

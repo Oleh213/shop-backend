@@ -30,7 +30,8 @@ namespace sushi_backend.Migrations
                 {
                     ImagesSliderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,6 +50,19 @@ namespace sushi_backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_loggers", x => x.LoggerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "magazineSettings",
+                columns: table => new
+                {
+                    MagazineSettingsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Key = table.Column<bool>(type: "bit", nullable: false),
+                    OnePlusOneAction = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_magazineSettings", x => x.MagazineSettingsId);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,11 +108,29 @@ namespace sushi_backend.Migrations
                 {
                     PromocodetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Discount = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_promocodes", x => x.PromocodetId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "timeLines",
+                columns: table => new
+                {
+                    TimeLineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    From = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    To = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeConfig = table.Column<int>(type: "int", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    IsOpen = table.Column<bool>(type: "bit", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_timeLines", x => x.TimeLineId);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,7 +188,9 @@ namespace sushi_backend.Migrations
                     Discount = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<int>(type: "int", nullable: false),
                     ProductOptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImagePreview = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Items = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -243,10 +277,16 @@ namespace sushi_backend.Migrations
                 name: "loggers");
 
             migrationBuilder.DropTable(
+                name: "magazineSettings");
+
+            migrationBuilder.DropTable(
                 name: "orderLists");
 
             migrationBuilder.DropTable(
                 name: "promocodes");
+
+            migrationBuilder.DropTable(
+                name: "timeLines");
 
             migrationBuilder.DropTable(
                 name: "users");

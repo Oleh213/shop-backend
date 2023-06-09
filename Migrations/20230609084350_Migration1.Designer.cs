@@ -12,7 +12,7 @@ using WebShop.Main.DBContext;
 namespace sushi_backend.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20230515131923_Migration1")]
+    [Migration("20230609084350_Migration1")]
     partial class Migration1
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace sushi_backend.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -89,6 +89,9 @@ namespace sushi_backend.Migrations
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
@@ -258,9 +261,29 @@ namespace sushi_backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ImageNumber")
+                        .HasColumnType("int");
+
                     b.HasKey("ImagesSliderId");
 
                     b.ToTable("imagesSliders");
+                });
+
+            modelBuilder.Entity("sushi_backend.Context.MagazineSettings", b =>
+                {
+                    b.Property<Guid>("MagazineSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Key")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnePlusOneAction")
+                        .HasColumnType("bit");
+
+                    b.HasKey("MagazineSettingsId");
+
+                    b.ToTable("magazineSettings");
                 });
 
             modelBuilder.Entity("sushi_backend.Context.Product", b =>
@@ -284,6 +307,13 @@ namespace sushi_backend.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePreview")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Items")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -325,6 +355,36 @@ namespace sushi_backend.Migrations
                     b.HasKey("ProductOptionsId");
 
                     b.ToTable("productOptions");
+                });
+
+            modelBuilder.Entity("sushi_backend.Context.TimeLine", b =>
+                {
+                    b.Property<Guid>("TimeLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeConfig")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("TimeLineId");
+
+                    b.ToTable("timeLines");
                 });
 
             modelBuilder.Entity("WebShop.Main.Context.DeliveryOptions", b =>

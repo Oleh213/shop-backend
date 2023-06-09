@@ -20,7 +20,7 @@ namespace WebShop.Main.DBContext
 
         public DbSet<Order> orders { get; set; }
 
-        public DbSet<Promocode> promocodes { get; set;}
+        public DbSet<Promocode> promocodes { get; set; }
 
         public DbSet<OrderList> orderLists { get; set; }
 
@@ -43,7 +43,7 @@ namespace WebShop.Main.DBContext
                 .HasMany(x => x.Products)
                 .WithOne(x => x.Category)
                 .IsRequired()
-                .HasForeignKey(x => x.CategoryId);          
+                .HasForeignKey(x => x.CategoryId);
 
             modelBuilder.Entity<OrderList>()
                 .HasOne(x => x.Order)
@@ -66,7 +66,7 @@ namespace WebShop.Main.DBContext
                 .HasMany(x => x.Products)
                 .WithOne(x => x.ProductOption)
                 .HasForeignKey(x => x.ProductOptionsId);
-            
+
             modelBuilder.Entity<User>().HasKey(s => new { s.UserId });
 
             modelBuilder.Entity<Order>().HasKey(s => new { s.OrderId });

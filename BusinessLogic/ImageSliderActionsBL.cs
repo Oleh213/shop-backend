@@ -36,7 +36,7 @@ namespace sushi_backend.BusinessLogic
             var number = await _context.imagesSliders.MaxAsync(x=> x.ImageNumber);
             var imageNumber = Guid.NewGuid().ToString();
 
-            if(await _productActionsBL.UploadImage(model.File, imageNumber))
+            if(await _productActionsBL.UploadImage(model.File, imageNumber, "sliders"))
             {
                 await _context.imagesSliders.AddAsync(new ImagesSlider
                 {
@@ -56,7 +56,7 @@ namespace sushi_backend.BusinessLogic
         {
             var images = await _context.imagesSliders.ToListAsync();
 
-            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source") + "sliders/";
 
             if (images != null)
             {
@@ -87,7 +87,7 @@ namespace sushi_backend.BusinessLogic
                 return false;
 
             }
-            if (await _productActionsBL.DeleteImage(slide.Image) && await _productActionsBL.UploadImage(model.File!, imageId))
+            if (await _productActionsBL.DeleteImage(slide.Image) && await _productActionsBL.UploadImage(model.File!, imageId, "slider"))
             {
                 slide.Image = imageId;
 

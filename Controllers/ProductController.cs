@@ -211,7 +211,7 @@ namespace Shop.Main.Actions
 
                 if (product != null)
                 {
-                    var productDTO = _productActionsBL.OneProductsDTO(product);
+                    var productDTO = await _productActionsBL.OneProductsDTO(product);
 
                     return Ok(productDTO);
                 }

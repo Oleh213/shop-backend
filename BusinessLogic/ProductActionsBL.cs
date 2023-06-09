@@ -55,7 +55,6 @@ namespace WebShop.Main.BusinessLogic
 
             var category = await _context.categories.FirstOrDefaultAsync(x => x.CategoryName == model.CategoryName);
 
-
             _context.products.Add(new Product()
             {
                 Name = model.ProductName,
@@ -64,10 +63,12 @@ namespace WebShop.Main.BusinessLogic
                 ProductId = id,
                 Description = model.Description,
                 CategoryId = category.CategoryId,
-                Image = imageName.ToString(),
+                Image = model.File.FileName,
+                ImagePreview = model.File.FileName,
+                Weight = model.Weight
             });
 
-            await UploadImage(model.File, imageName.ToString());
+            await UploadImage(model.File, model.File.FileName, "products-main");
 
             await _context.SaveChangesAsync();
 
@@ -98,12 +99,14 @@ namespace WebShop.Main.BusinessLogic
             product.Available = model.Available;
             product.CategoryId = category.CategoryId;
             product.Description = model.Description;
+            product.Weight = model.Weight;
+
 
             product.ProductOption = await _context.productOptions.FirstOrDefaultAsync(x => x.Name == model.ProductOptionName);
             if (model.File != null)
             {
-                product.Image = imageName.ToString();
-                await UploadImage(model.File, imageName.ToString());
+                product.Image = model.File.FileName;
+                await UploadImage(model.File, model.File.FileName, "products-main");
             }
 
             product.Price = product.Discount > 0 ?  model.Price - product.Discount : model.Price;
@@ -113,7 +116,7 @@ namespace WebShop.Main.BusinessLogic
             return "Ok";
         }
 
-        public async Task<bool> UploadImage(IFormFile file, string imageName)
+        public async Task<bool> UploadImage(IFormFile file, string imageName,string folderName)
         {
             using (var client = new AmazonS3Client("AKIATEKBWQQJRIHN2JDQ", "dNdvJlUgnOeq2EswfIuOOSqAr9nkb0iG+wIgBK/a", RegionEndpoint.EUWest1))
             {
@@ -124,7 +127,7 @@ namespace WebShop.Main.BusinessLogic
                     var uploadRequest = new TransferUtilityUploadRequest
                     {
                         InputStream = newMemoryStream,
-                        Key = string.IsNullOrEmpty("images") ? imageName : $"{"images"?.TrimEnd('/')}/{imageName}",
+                        Key = string.IsNullOrEmpty(folderName) ? imageName : $"{folderName?.TrimEnd('/')}/{imageName}",
                         BucketName = "images-shop-angular",
                         CannedACL = S3CannedACL.PublicRead
                     };
@@ -161,7 +164,7 @@ namespace WebShop.Main.BusinessLogic
             _context.categories.Load();
             _context.productOptions.Load();
 
-            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source") + "products-main/";
 
             var productDPOs = new List<ProductDTO>();
 
@@ -192,9 +195,9 @@ namespace WebShop.Main.BusinessLogic
                 FirstOrDefaultAsync();
         
 
-        public ProductDTO OneProductsDTO(Product product)
+        public async Task<ProductDTO> OneProductsDTO(Product product)
         {
-            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source") + "products-main/";
 
             var productDTO = new ProductDTO
             {
@@ -210,7 +213,10 @@ namespace WebShop.Main.BusinessLogic
                 Description = product.Description,
                 Image = imageSource + product.Image,
             };
-
+            if(product.Items != null && product.Items.Length> 0)
+            {
+                productDTO.Items = await GetProductItems(product.Items);
+            }
             return productDTO;
         }
 
@@ -226,6 +232,28 @@ namespace WebShop.Main.BusinessLogic
             }
 
             return (productOptionsDTO);
+        }
+
+        public async Task<List<Product>> GetProductItems(string items)
+        {
+            var guidArray = items.Split('|', StringSplitOptions.RemoveEmptyEntries);
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source") + "products-main/";
+
+            var itemsList = new List<Guid>();
+            var itemsProducts = new List<Product>();
+            var products = await _context.products.ToListAsync();
+
+            foreach (string guid in guidArray)
+            {
+                if (Guid.TryParse(guid.Trim(), out Guid parsedGuid))
+                {
+                    itemsList.Add(parsedGuid);
+                    var product = products.FirstOrDefault(x => x.ProductId == parsedGuid);
+                    product.Image = imageSource + product.Image;
+                    itemsProducts.Add(product);
+                }
+            }
+            return itemsProducts;
         }
     }
 }

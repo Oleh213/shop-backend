@@ -22,15 +22,15 @@ namespace WebShop.Main.BusinessLogic
             _configuration = configuration;
         }
 
-        public List<CartItemDTO> CartItemsDTO(List<CartItemModel> cartOfUser)
+        public async Task<List<CartItemDTO>> CartItemsDTO(List<CartItemModel> cartOfUser)
         {
-            var imageSource = _configuration.GetValue<string>("AWS:Image-Source");
+            var imageSource = _configuration.GetValue<string>("AWS:Image-Source") + "products-main/";
 
             if (cartOfUser != null)
             {
                 var newCartOfUsers = new List<CartItemDTO>();
 
-                var product = _context.products;
+                var product = await _context.products.ToListAsync();
                 foreach (var cartItem in cartOfUser)
                 {
                     var item = product.FirstOrDefault(x=> x.ProductId == cartItem.ProductId);

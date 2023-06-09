@@ -44,7 +44,7 @@ namespace Shop.Main.Actions
             {
                 if(cartItems.Count() > 0)
                 {
-                   var cartItemsDTO =  _cartItemActionsBL.CartItemsDTO(cartItems);
+                   var cartItemsDTO = await _cartItemActionsBL.CartItemsDTO(cartItems);
 
                     return Ok(cartItemsDTO);
 

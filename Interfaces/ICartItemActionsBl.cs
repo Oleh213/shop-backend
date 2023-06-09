@@ -8,7 +8,7 @@ namespace WebShop.Main.Interfaces
 {
 	public interface ICartItemActionsBL
 	{
-        List<CartItemDTO> CartItemsDTO(List<CartItemModel> cartOfUser);
+        Task<List<CartItemDTO>> CartItemsDTO(List<CartItemModel> cartOfUser);
     }
 }
 

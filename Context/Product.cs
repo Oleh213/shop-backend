@@ -25,7 +25,11 @@ namespace sushi_backend.Context
 
         public Category Category { get; set; }
 
+        public string ImagePreview { get; set; }
+
         public string Image { get; set; }
+
+        public string? Items { get; set; }
     }
 }
 
