@@ -105,7 +105,7 @@ namespace WebShop.Main.BusinessLogic
                     OrderTime = newDate,
                     Name = contactInfo.Name,
                     SurName = contactInfo.SurName,
-                    PhoneNumber = contactInfo.PhoneNumber,
+                    PhoneNumber = contactInfo.PhoneNumber.ToString(),
                     Email = contactInfo.Email,
                     PromoUsed = promocode.PromoUsed,
                     OrderNumber = _context.orders.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1,
@@ -238,7 +238,7 @@ namespace WebShop.Main.BusinessLogic
 
             await _context.SaveChangesAsync();
 
-            await _hubContext.Clients.All.SendAsync("MakeOrder", orderDTO);
+            await _hubContext.Clients.User(Guid.NewGuid().ToString()).SendAsync("MakeOrder", orderDTO);
 
             return "Ok";
         }

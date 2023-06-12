@@ -255,11 +255,14 @@ namespace WebShop.Main.BusinessLogic
             }
             return itemsProducts;
         }
+
         public async Task<bool> AddItemToProduct(Guid itemId, Guid productId)
         {
             var product = await _context.products.FirstOrDefaultAsync(x=> x.ProductId == productId);
 
-            if(product.Items == null)
+
+
+            if (product.Items == null)
             {
                 product.Items = itemId.ToString();
             }
@@ -267,6 +270,7 @@ namespace WebShop.Main.BusinessLogic
             {
                 product.Items += " | " + itemId.ToString();
             }
+
             await _context.SaveChangesAsync();
 
             return true;
