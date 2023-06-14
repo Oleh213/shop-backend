@@ -167,3 +167,6 @@
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/AWSSDK.Extensions.NETCore.Setup.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/BouncyCastle.Cryptography.dll
 /Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Microsoft.Identity.Web.UI.Views.dll
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/firebase.json
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Firebase.Auth.dll
+/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/bin/Debug/net7.0/Twilio.dll

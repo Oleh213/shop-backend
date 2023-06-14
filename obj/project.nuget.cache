@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7CCt0euWFEvhRb3fDd1K3hvjNJ2EstlQvyg5iBNpEw07WElyJx3uHd0bhRGmb+N8mYf1z5fl5/5rXVJryzR9fw==",
+  "dgSpecHash": "00UhC6cNovzCaLV1ORi+IdYIn8cpi4iNf75MSV1EN7srYiNzVb76g/TIIhQj5rbsjgMy3Q15l3Vc7KrlAPh4hg==",
   "success": true,
   "projectFilePath": "/Users/oleh/Document/Second-Project/sushi-backend/sushi-backend/sushi-backend.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "/Users/oleh/.nuget/packages/bouncycastle.cryptography/2.1.1/bouncycastle.cryptography.2.1.1.nupkg.sha512",
     "/Users/oleh/.nuget/packages/castle.core/4.4.1/castle.core.4.4.1.nupkg.sha512",
     "/Users/oleh/.nuget/packages/entityframework/6.4.4/entityframework.6.4.4.nupkg.sha512",
+    "/Users/oleh/.nuget/packages/firebaseauthentication.net/4.0.2/firebaseauthentication.net.4.0.2.nupkg.sha512",
     "/Users/oleh/.nuget/packages/google.api.commonprotos/2.6.0/google.api.commonprotos.2.6.0.nupkg.sha512",
     "/Users/oleh/.nuget/packages/google.api.gax/4.1.1/google.api.gax.4.1.1.nupkg.sha512",
     "/Users/oleh/.nuget/packages/google.api.gax.grpc/4.1.1/google.api.gax.grpc.4.1.1.nupkg.sha512",
@@ -220,7 +221,8 @@
     "/Users/oleh/.nuget/packages/system.xml.readerwriter/4.3.0/system.xml.readerwriter.4.3.0.nupkg.sha512",
     "/Users/oleh/.nuget/packages/system.xml.xdocument/4.3.0/system.xml.xdocument.4.3.0.nupkg.sha512",
     "/Users/oleh/.nuget/packages/system.xml.xmldocument/4.3.0/system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "/Users/oleh/.nuget/packages/telegram.bot/19.0.0/telegram.bot.19.0.0.nupkg.sha512"
+    "/Users/oleh/.nuget/packages/telegram.bot/19.0.0/telegram.bot.19.0.0.nupkg.sha512",
+    "/Users/oleh/.nuget/packages/twilio/6.7.0/twilio.6.7.0.nupkg.sha512"
   ],
   "logs": [
     {

@@ -259,7 +259,7 @@ namespace Shop.Main.Actions
             {
                 var order = await _orderActionsBL.GetOrderById(orderId);
 
-                return (order != null) ? Ok(order) : NotFound();
+                return order != null ? Ok(order) : NotFound();
 
             }
             catch (Exception ex)

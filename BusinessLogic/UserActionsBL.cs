@@ -56,9 +56,9 @@ namespace WebShop.Main.BusinessLogic
                 permition = 2;
             }
 
-            var userId = new UserDTO { UserId = user.UserId, UserRole = permition };
+            var userDTO = new UserDTO { UserId = user.UserId, UserRole = permition, UserName = user.Name, };
 
-            return userId;
+            return userDTO;
         }
 
 
@@ -89,6 +89,9 @@ namespace WebShop.Main.BusinessLogic
 
             return outUser;
         }
+
+
+
     }
 }
 

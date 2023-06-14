@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Shop.Main.Actions;
 using sushi_backend.BusinessLogic;
 using sushi_backend.Context;
+using sushi_backend.Hubs;
 using sushi_backend.Interfaces;
 using sushi_backend.Models;
 using WebShop.Main.Conext;
@@ -35,9 +36,9 @@ namespace WebShop.Main.BusinessLogic
 
         private ITimeLinesActionsBL _timeLinesActionsBL;
 
-        private readonly IHubContext<OrderHub> _hubContext;
+        private readonly IHubContext<OrderHub, IOrderHub> _hubContext;
 
-        public OrderActionsBL(ShopContext context, IHubContext<OrderHub> hubContext, IEmailSender emailSenderBL, ITimeLinesActionsBL timeLinesActionsBL)
+        public OrderActionsBL(ShopContext context, IHubContext<OrderHub, IOrderHub> hubContext, IEmailSender emailSenderBL, ITimeLinesActionsBL timeLinesActionsBL)
         {
             _context = context;
             _hubContext = hubContext;
@@ -150,7 +151,7 @@ namespace WebShop.Main.BusinessLogic
 
                 await _context.SaveChangesAsync();
 
-                await _hubContext.Clients.All.SendAsync("MakeOrder", newOrder);
+                _hubContext.Clients.Groups("admins").MakeOrder(newOrder);
 
                 SentNotofication(newOrder, orderProduct);
 
@@ -238,7 +239,9 @@ namespace WebShop.Main.BusinessLogic
 
             await _context.SaveChangesAsync();
 
-            await _hubContext.Clients.User(Guid.NewGuid().ToString()).SendAsync("MakeOrder", orderDTO);
+            await _hubContext.Clients.Groups(order.OrderId.ToString()).MakeOrder(orderDTO);
+
+            await _hubContext.Clients.Groups("admins").MakeOrder(orderDTO);
 
             return "Ok";
         }
@@ -348,7 +351,7 @@ namespace WebShop.Main.BusinessLogic
 
             _context.SaveChanges();
 
-            _hubContext.Clients.All.SendAsync("MakeOrder", order);
+            _hubContext.Clients.Groups("admins").MakeOrder(order);
 
             return true;
 

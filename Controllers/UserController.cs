@@ -9,7 +9,13 @@ using WebShop.Main.DTO;
 using WebShop.Main.Interfaces;
 using WebShop.Main.BusinessLogic;
 using WebShop.Main.Context;
+using Firebase;
+using Firebase.Auth.Providers;
+using Firebase.Auth.Repository;
+using Firebase.Auth;
 
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 namespace WebShop.Main.Actions
 {
     [ApiController]
@@ -128,7 +134,8 @@ namespace WebShop.Main.Actions
             {
                 var user = await _userActionsBL.GetUser(UserId);
 
-                return Ok(user.Role);
+                var userDTO = _userActionsBL.UserDTO(user);
+                return Ok(userDTO);
             }
             catch (Exception ex)
             {
@@ -140,21 +147,49 @@ namespace WebShop.Main.Actions
 
 
         [HttpGet("GetUserInfo")]
-        [Authorize]
         public async Task<IActionResult> GetUserInfo()
         {
             try
             {
-                var user = await _userActionsBL.GetUser(UserId);
 
-                if (user != null)
-                {
-                    var outUser = await _userActionsBL.UserInfoDTO(user);
+                string accountSid = "AC68eaa65890dc3174e00fb6c17ffdbc03";
+                string authToken = "c19bf0cea77ca297888a292c642387a3";
 
-                    return Ok(outUser);
-                }
-                else
-                    return NotFound();
+                TwilioClient.Init(accountSid, authToken);
+
+                var message = MessageResource.Create(
+                    body: "Hi Yohan, We are from Twilio Code: 13",
+                    from: new Twilio.Types.PhoneNumber("+14302434786"), // virtual Twilio number
+                    to: new Twilio.Types.PhoneNumber("+380666638032")
+                );
+
+                return Ok(message);
+
+                //var user = await _userActionsBL.GetUser(UserId);
+
+                //if (user != null)
+                //{
+                //    var outUser = await _userActionsBL.UserInfoDTO(user);
+
+                //    return Ok(outUser);
+                //}
+                //else
+                //    return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _loggerBL.AddLog(LoggerLevel.Error, $"Message: '{ex.Message}', Source: '{ex.Source}', InnerException: '{ex.InnerException}' ");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("Ping")]
+        public async Task<IActionResult> Ping()
+        {
+            try
+            {
+                return Ok();
             }
             catch (Exception ex)
             {

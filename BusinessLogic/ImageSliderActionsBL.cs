@@ -69,8 +69,9 @@ namespace sushi_backend.BusinessLogic
                         Description = item.Description,
                         Image = imageSource + item.Image,
                         ImageNumber = item.ImageNumber,
+                        ImagesSliderId = item.ImagesSliderId
 
-                    });
+                    });;
                 }
                 return imagerDTO;
             }
@@ -79,22 +80,28 @@ namespace sushi_backend.BusinessLogic
 
         public async Task<bool> ChangeImage(EditSlideModel model)
         {
-            var slide = await _context.imagesSliders.FirstOrDefaultAsync(x=> x.ImageNumber == model.ImageNumber);
+            var slide = await _context.imagesSliders.FirstOrDefaultAsync(x=> x.ImagesSliderId == model.ImageSliderId);
 
             var imageId = Guid.NewGuid().ToString();
+
+            await _productActionsBL.DeleteImage(slide.Image);
+
             if (slide == null)
             {
                 return false;
-
             }
-            if (await _productActionsBL.DeleteImage(slide.Image) && await _productActionsBL.UploadImage(model.File!, imageId, "slider"))
+
+            slide.Description = model.Description;
+            slide.ImageNumber = model.ImageNumber;
+
+            await _context.SaveChangesAsync();
+            return true;
+
+            if (model.File != null)
             {
                 slide.Image = imageId;
-
-                await _context.SaveChangesAsync();
-                return true;
+                await _productActionsBL.UploadImage(model.File, model.File.FileName, "products-main");
             }
-            return false;
         }
 
         public async Task<bool> DeleteImage(EditSlideModel model)

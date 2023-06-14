@@ -59,6 +59,10 @@
               "target": "Package",
               "version": "[6.4.4, )"
             },
+            "FirebaseAuthentication.net": {
+              "target": "Package",
+              "version": "[4.0.2, )"
+            },
             "Google.Cloud.EntityFrameworkCore.Spanner": {
               "target": "Package",
               "version": "[2.1.1, )"
@@ -132,6 +136,10 @@
             "Telegram.Bot": {
               "target": "Package",
               "version": "[19.0.0, )"
+            },
+            "Twilio": {
+              "target": "Package",
+              "version": "[6.7.0, )"
             }
           },
           "imports": [

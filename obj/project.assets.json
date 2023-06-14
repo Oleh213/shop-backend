@@ -213,6 +213,22 @@
           "buildTransitive/netcoreapp3.0/EntityFramework.targets": {}
         }
       },
+      "FirebaseAuthentication.net/4.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2"
+        },
+        "compile": {
+          "lib/netstandard2.0/Firebase.Auth.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Firebase.Auth.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Google.Api.CommonProtos/2.6.0": {
         "type": "package",
         "dependencies": {
@@ -3894,6 +3910,25 @@
             "related": ".pdb;.xml"
           }
         }
+      },
+      "Twilio/6.7.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "6.19.0",
+          "Newtonsoft.Json": "13.0.1",
+          "System.Collections.Specialized": "4.3.0",
+          "System.IdentityModel.Tokens.Jwt": "6.19.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Twilio.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Twilio.dll": {
+            "related": ".xml"
+          }
+        }
       }
     }
   },
@@ -4164,6 +4199,22 @@
         "tools/netcoreapp3.0/any/ef6.dll",
         "tools/netcoreapp3.0/any/ef6.pdb",
         "tools/netcoreapp3.0/any/ef6.runtimeconfig.json"
+      ]
+    },
+    "FirebaseAuthentication.net/4.0.2": {
+      "sha512": "805UhOsDsmDPbESOKrT1x31Dx9qLqvt6pEwRyKRVmBAcJxLWFnyoJ7Vzj/TesuzIv0fAXpbnRfzK4LotG+Rksg==",
+      "type": "package",
+      "path": "firebaseauthentication.net/4.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "firebase.png",
+        "firebaseauthentication.net.4.0.2.nupkg.sha512",
+        "firebaseauthentication.net.nuspec",
+        "lib/netstandard2.0/Firebase.Auth.dll",
+        "lib/netstandard2.0/Firebase.Auth.xml"
       ]
     },
     "Google.Api.CommonProtos/2.6.0": {
@@ -11356,6 +11407,25 @@
         "telegram.bot.19.0.0.nupkg.sha512",
         "telegram.bot.nuspec"
       ]
+    },
+    "Twilio/6.7.0": {
+      "sha512": "QSu7uRJyVQckfcEgHiHca+h6L78tRJEgKFsjXlikNGUjVFMT+XgZuRx3M+/W9x0zIHehDPy1Zh0CU9AX6TKhiw==",
+      "type": "package",
+      "path": "twilio/6.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/Twilio.dll",
+        "lib/net35/Twilio.xml",
+        "lib/net451/Twilio.dll",
+        "lib/net451/Twilio.xml",
+        "lib/netstandard1.4/Twilio.dll",
+        "lib/netstandard1.4/Twilio.xml",
+        "lib/netstandard2.0/Twilio.dll",
+        "lib/netstandard2.0/Twilio.xml",
+        "twilio.6.7.0.nupkg.sha512",
+        "twilio.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -11365,6 +11435,7 @@
       "AWSSDK.S3 >= 3.7.104.24",
       "BCrypt.Net-Next >= 4.0.3",
       "EntityFramework >= 6.4.4",
+      "FirebaseAuthentication.net >= 4.0.2",
       "Google.Cloud.EntityFrameworkCore.Spanner >= 2.1.1",
       "LiqPay >= 2023.5.307.406",
       "MailKit >= 4.0.0",
@@ -11382,7 +11453,8 @@
       "Newtonsoft.Json >= 13.0.3",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "System.Security.Claims >= 4.3.0",
-      "Telegram.Bot >= 19.0.0"
+      "Telegram.Bot >= 19.0.0",
+      "Twilio >= 6.7.0"
     ]
   },
   "packageFolders": {
@@ -11442,6 +11514,10 @@
           "EntityFramework": {
             "target": "Package",
             "version": "[6.4.4, )"
+          },
+          "FirebaseAuthentication.net": {
+            "target": "Package",
+            "version": "[4.0.2, )"
           },
           "Google.Cloud.EntityFrameworkCore.Spanner": {
             "target": "Package",
@@ -11516,6 +11592,10 @@
           "Telegram.Bot": {
             "target": "Package",
             "version": "[19.0.0, )"
+          },
+          "Twilio": {
+            "target": "Package",
+            "version": "[6.7.0, )"
           }
         },
         "imports": [

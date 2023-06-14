@@ -13,6 +13,7 @@
           "AWSSDK.S3": "3.7.104.24",
           "BCrypt.Net-Next": "4.0.3",
           "EntityFramework": "6.4.4",
+          "FirebaseAuthentication.net": "4.0.2",
           "Google.Cloud.EntityFrameworkCore.Spanner": "2.1.1",
           "LiqPay": "2023.5.307.406",
           "MailKit": "4.0.0",
@@ -30,7 +31,8 @@
           "Newtonsoft.Json": "13.0.3",
           "Swashbuckle.AspNetCore": "6.5.0",
           "System.Security.Claims": "4.3.0",
-          "Telegram.Bot": "19.0.0"
+          "Telegram.Bot": "19.0.0",
+          "Twilio": "6.7.0"
         },
         "runtime": {
           "sushi-backend.dll": {}
@@ -183,6 +185,17 @@
           "lib/netstandard2.1/EntityFramework.dll": {
             "assemblyVersion": "6.0.0.0",
             "fileVersion": "6.400.420.21404"
+          }
+        }
+      },
+      "FirebaseAuthentication.net/4.0.2": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Firebase.Auth.dll": {
+            "assemblyVersion": "4.0.2.0",
+            "fileVersion": "4.0.2.0"
           }
         }
       },
@@ -2338,6 +2351,20 @@
             "fileVersion": "19.0.0.0"
           }
         }
+      },
+      "Twilio/6.7.0": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Tokens": "6.30.0",
+          "Newtonsoft.Json": "13.0.3",
+          "System.Collections.Specialized": "4.3.0",
+          "System.IdentityModel.Tokens.Jwt": "6.30.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Twilio.dll": {
+            "assemblyVersion": "6.7.0.0",
+            "fileVersion": "6.7.0.0"
+          }
+        }
       }
     }
   },
@@ -2423,6 +2450,13 @@
       "sha512": "sha512-yj1+/4tci7Panu3jKDHYizxwVm0Jvm7b7m057b5h4u8NUHGCR8WIWirBTw+8EptRffwftIWPBeIRGNKD1ewEMQ==",
       "path": "entityframework/6.4.4",
       "hashPath": "entityframework.6.4.4.nupkg.sha512"
+    },
+    "FirebaseAuthentication.net/4.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-805UhOsDsmDPbESOKrT1x31Dx9qLqvt6pEwRyKRVmBAcJxLWFnyoJ7Vzj/TesuzIv0fAXpbnRfzK4LotG+Rksg==",
+      "path": "firebaseauthentication.net/4.0.2",
+      "hashPath": "firebaseauthentication.net.4.0.2.nupkg.sha512"
     },
     "Google.Api.CommonProtos/2.6.0": {
       "type": "package",
@@ -3865,6 +3899,13 @@
       "sha512": "sha512-Q16IOitgjGoaJOuqgKQy0FeF+hr/ncmlX2esrhCC7aiyhSX7roYEriWaGAHkQZR8QzbImjFfl4eQh2IxcnOrPg==",
       "path": "telegram.bot/19.0.0",
       "hashPath": "telegram.bot.19.0.0.nupkg.sha512"
+    },
+    "Twilio/6.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QSu7uRJyVQckfcEgHiHca+h6L78tRJEgKFsjXlikNGUjVFMT+XgZuRx3M+/W9x0zIHehDPy1Zh0CU9AX6TKhiw==",
+      "path": "twilio/6.7.0",
+      "hashPath": "twilio.6.7.0.nupkg.sha512"
     }
   }
 }

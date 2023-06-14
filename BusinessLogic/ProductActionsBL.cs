@@ -20,6 +20,7 @@ using Amazon.S3.Transfer;
 using Amazon.S3.Model;
 using Amazon;
 
+
 namespace WebShop.Main.BusinessLogic
 {
 	public class ProductActionsBL : IProductActionsBL
@@ -100,7 +101,6 @@ namespace WebShop.Main.BusinessLogic
             product.CategoryId = category.CategoryId;
             product.Description = model.Description;
             product.Weight = model.Weight;
-
 
             product.ProductOption = await _context.productOptions.FirstOrDefaultAsync(x => x.Name == model.ProductOptionName);
             if (model.File != null)
